@@ -1,0 +1,96 @@
+VisualisingGenomicsData
+========================================================
+author: MRC Clinical Sciences Centre
+date: http://mrccsc.github.io/training.html
+autosize: true
+
+Intro slides
+========================================================
+
+
+
+Topics Covered
+========================================================
+
+* Visualising high dimensional data
+  + Heatmap
+  + Principal Component Analysis
+* Meta signal of Genomic Intervals/Regions
+  + Replicate peaks
+  + Average Coverage
+  + Motif occurence
+* Exporting data to IGV
+  + Tracktables
+  + Exporting DESeq2 results to IGV
+* Visualising features in Gviz
+  + Introduction to Gviz.
+  + Plotting coverage over regions.
+  + Adding annotation.
+  + Plotting reads
+  + Plotting splice junctions.
+
+Plotting Splice Junctions
+========================================================
+
+```{r, echo=FALSE}
+library(Gviz)
+library(Rsamtools)
+afrom <- 98986825
+ato <- 98997877
+
+indexBam("~/Desktop/VisualisingGenomicsData/Data/heart.bodyMap.bam")
+indexBam("~/Desktop/VisualisingGenomicsData/Data/liver.bodyMap.bam")
+
+alTrack <- AlignmentsTrack("~/Desktop/VisualisingGenomicsData/Data/heart.bodyMap.bam",
+                           isPaired = TRUE)
+alTrack2 <- AlignmentsTrack("~/Desktop/VisualisingGenomicsData/Data/liver.bodyMap.bam", 
+                           isPaired = TRUE)
+
+bmt <- BiomartGeneRegionTrack(genome = "hg19", chromosome = "chr12",
+                              start = afrom, end = ato,
+                              filter = list(with_ox_refseq_mrna = TRUE),
+                              stacking = "dense")
+
+
+plotTracks(c(bmt, alTrack,alTrack2), from = afrom,to = ato,
+           chromosome = "chr12", type = c("pileup"))
+
+
+plotTracks(c(bmt, alTrack,alTrack2), from = afrom,to = ato,
+           chromosome = "chr12", type = c("coverage","sashimi"))
+
+```
+
+```{r, echo=FALSE}
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+customMT <- GeneRegionTrack(TxDb.Hsapiens.UCSC.hg19.knownGene)
+plotTracks(c(customMT, alTrack,alTrack2), from = afrom,to = ato,
+           chromosome = "chr12", type = c("coverage","sashimi"))
+
+```
+
+
+afrom <- 2960000
+ato <- 3160000
+alTrack <- AlignmentsTrack(system.file(package = "Gviz","extdata", "gapped.bam"), isPaired = TRUE)
+bmt <- BiomartGeneRegionTrack(genome = "hg19", chromosome = "chr12",
+start = afrom, end = ato, filter = list(with_ox_refseq_mrna = TRUE),stacking = "dense")
+plotTracks(c(bmt, alTrack),
+           chromosome = "chr12", type = c("coverage","sashimi"))
+           
+alTrack <- AlignmentsTrack("~/Desktop/VisualisingGenomicsData/Data/heart.bodyMap.bam", isPaired = TRUE)
+
+           
+library(GenomicRanges)
+data(cpgIslands)
+class(cpgIslands)
+chr <- as.character(unique(seqnames(cpgIslands)))
+gen <- genome(cpgIslands)
+atrack <- AnnotationTrack(cpgIslands, name = "CpG")
+plotTracks(atrack)
+
+
+data(geneModels)
+grtrack <- GeneRegionTrack(geneModels, genome = gen,chromosome = chr, name = "Gene Model")
+plotTracks(list(grtrack))
+
