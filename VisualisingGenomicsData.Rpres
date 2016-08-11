@@ -253,7 +253,29 @@ ato <- 134888917
   plotTracks(c(motif),
            chromosome = "chr5",from = afrom,to = ato)  
   
-  export.bed(tempGR,con = "Data/motif.bed")                   
+  export.bed(tempGR,con = "Data/motif.bed")  
+  
+ afrom <- 135313003
+ ato <- 135313570  
+ 
+from <- afrom
+to <- ato
+
+ conservation <- UcscTrack(genome = "hg19", chromosome = "chr5", 
+ track = "Conservation", table = "phyloP100wayAll",
+ from = from, to = to, trackType = "DataTrack",
+ start = "start", end = "end", data = "score",
+ type = "hist", window = "auto",
+ name = "Conservation")
+ plotTracks(c(conservation,peakReads), from = afrom,to = ato,
+           chromosome = "chr5", type = c("hist","coverage"),sizes = c(1,1)) 
+   plotTracks(c(motif,conservation),
+           chromosome = "chr5",from = afrom,to = ato)  
+
+   peakReads <- AlignmentsTrack("Data/small_Sorted_SRR568129.bam")
+   plotTracks(c(peakReads,conservation,motif),
+           chromosome = "chr5",from = afrom,to = ato,type=c("coverage","hist"))
+
 ```
 
 Alt peak with Motif
