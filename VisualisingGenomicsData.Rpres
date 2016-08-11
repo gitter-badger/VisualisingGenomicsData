@@ -92,7 +92,7 @@ afrom <- 134887024
 ato <- 134888917
 
 
-peakReads <- AlignmentsTrack("~/Desktop/VisualisingGenomicsData/Data/small_Sorted_SRR568129.bam")
+peakReads <- AlignmentsTrack("Data/small_Sorted_SRR568129.bam")
 
 temp <- readGAlignments("~/Desktop/VisualisingGenomicsData/Data/small_Sorted_SRR568129.bam")
 
@@ -196,6 +196,62 @@ customMT <- GeneRegionTrack(txdbFromGFF)
 plotTracks(c(customMT, alTrack,alTrack2), from = afrom,to = ato,
            chromosome = "chr12", type = c("coverage","sashimi"))
 
+```
+
+```{r, echo=TRUE}
+afrom <- 134887024
+ato <- 134888917
+
+from <- afrom
+to <- ato
+
+ conservation <- UcscTrack(genome = "hg19", chromosome = "chr5", 
+ track = "Conservation", table = "phyloP100wayAll",
+ from = from, to = to, trackType = "DataTrack",
+ start = "start", end = "end", data = "score",
+ type = "hist", window = "auto",
+ name = "Conservation")
+ plotTracks(c(conservation,peakReads), from = afrom,to = ato,
+           chromosome = "chr5", type = c("hist","coverage"),sizes = c(1,1))
+
+```
+
+```{r, echo=TRUE}
+
+afrom <- 134887024
+ato <- 134888917
+
+from <- afrom
+to <- ato
+library(BSgenome.Hsapiens.UCSC.hg19)
+sTrack <- SequenceTrack(Hsapiens,from = 134887724,to = ato)
+ plotTracks(c(conservation,peakReads,sTrack), from = afrom,to = ato,
+           chromosome = "chr5", type = c("hist","coverage"),sizes = c(1,1,0.2))
+
+```
+
+
+```{r, echo=TRUE}
+
+library(seqLogo)
+library(MotifDb)
+PotentialCTCF <- as.list(subset (MotifDb, tolower (geneSymbol) == "ctcf"))
+seqLogo(PotentialCTCF[[1]])
+temp <- matchPWM(PotentialCTCF[[1]],BSgenome.Hsapiens.UCSC.hg19[["chr5"]], min.score="70%")
+tempComp <- matchPWM(PotentialCTCF[[1]],reverseComplement(BSgenome.Hsapiens.UCSC.hg19[["chr5"]], min.score="70%")
+tempGR <- GRanges(seqnames="chr5",c(ranges(temp),ranges(tempComp)))
+
+motif <- AnnotationTrack(c(tempGR), from = afrom,to = ato,
+           chromosome = "chr5")     
+ 
+ plotTracks(c(conservation,peakReads,sTrack,motif), from = afrom,to = ato,
+           chromosome = "chr5", type = c("hist","coverage"),sizes = c(1,1,0.2,0.5))                     
+ 
+ afrom <- 134880024
+ato <- 134888917
+             
+  plotTracks(c(motif),
+           chromosome = "chr5",from = afrom,to = ato)                                  
 ```
 
 Matrix like-data -- Heatmap and PCA
