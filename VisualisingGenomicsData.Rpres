@@ -198,6 +198,41 @@ plotTracks(c(customMT, alTrack,alTrack2), from = afrom,to = ato,
 
 ```
 
+Matrix like-data -- Heatmap and PCA
+Image for matrices
+Similarity and Clustering
+ -- Heatmaps
+ -- gplot heatmaps
+
+Meta-profiles -- soGGi
+ -- Using BAM/GRanges to summarise signal
+ --  Using PWMs to identify motifs.
+ -- Centralising motifs
+
+Tracktables..
+Making a tracktable
+Making a bed table.
+Making a DEseq2 table
+- Peaks.
+- Genes.
+
+
+Gviz..
+
+Setting up...
+
+GRanges
+Coverage
+Annotation
+Alignments
+Exercises.
+
+detailstrack 
+sequencetrack
+overlays
+
+Biomart tracks
+UCSC tracks
 <!-- afrom <- 2960000 -->
 <!-- ato <- 3160000 -->
 <!-- alTrack <- AlignmentsTrack(system.file(package = "Gviz","extdata", "gapped.bam"), isPaired = TRUE) -->
