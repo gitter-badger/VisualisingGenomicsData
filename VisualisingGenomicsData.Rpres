@@ -251,8 +251,14 @@ motif <- AnnotationTrack(c(tempGR), from = afrom,to = ato,
 ato <- 134888917
              
   plotTracks(c(motif),
-           chromosome = "chr5",from = afrom,to = ato)                                  
+           chromosome = "chr5",from = afrom,to = ato)  
+  
+  export.bed(tempGR,con = "Data/motif.bed")                   
 ```
+
+Alt peak with Motif
+chr5:135,313,003-135,313,570
+
 
 Matrix like-data -- Heatmap and PCA
 Image for matrices
