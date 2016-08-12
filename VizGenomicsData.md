@@ -507,3 +507,214 @@ plotTracks(accDT,
 ```
 
 ![plot of chunk unnamed-chunk-22](VizGenomicsData-figure/unnamed-chunk-22-1.png)
+
+Plotting regions in Gviz - Additional Parameters.
+========================================================
+
+As with all plotting functions in R, Gviz plots can be highly customisable.
+
+Simple features such as point size and colour are easily set as for standard R plots using **sex** and **col** paramters.
+
+
+```r
+plotTracks(accDT,
+           from=134887451,to=134888111,
+           chromosome="chr5",
+           col="red",cex=4)
+```
+
+![plot of chunk unnamed-chunk-23](VizGenomicsData-figure/unnamed-chunk-23-1.png)
+Full description of the parameters 
+
+
+Putting track togethers - Axis and Data
+========================================================
+
+Now we have shown how to construct a data track and axis track we can put them together in one plot.
+
+To do this we simply provide the GenomeAxisTrack and DataTrack objects as vector the **plotTracks()** function.
+
+
+
+```r
+plotTracks(c(accDT,genomeAxis),
+           from=134887451,to=134888111,
+           chromosome="chr5"
+           )
+```
+
+![plot of chunk unnamed-chunk-24](VizGenomicsData-figure/unnamed-chunk-24-1.png)
+Full description of the parameters 
+
+Putting track togethers - Ordering tracks in plot
+========================================================
+
+The order of tracks in the plot is simply defines by the order they are placed in the vector passed to **plotTracks()**
+
+
+
+```r
+plotTracks(c(genomeAxis,accDT),
+           from=134887451,to=134888111,
+           chromosome="chr5"
+           )
+```
+
+![plot of chunk unnamed-chunk-25](VizGenomicsData-figure/unnamed-chunk-25-1.png)
+
+Putting track togethers - Controling height of tracks in plot
+========================================================
+
+By default, Gviz will try and provide sensible track heights for your plots to best display your data.
+
+The track height can be controlled by provided a vector of relative heights to the **sizes** paramter of the **plotTracks()** function.
+
+If we want the axis to be 50% of the height of the Data track we specify the size for axis as 0.5 and that of data as 1.
+The order of sizes must match the order of objects they relate to.
+
+
+
+```r
+plotTracks(c(genomeAxis,accDT),
+           from=134887451,to=134888111,
+           chromosome="chr5",
+           sizes=c(0.5,1)
+           )
+```
+
+![plot of chunk unnamed-chunk-26](VizGenomicsData-figure/unnamed-chunk-26-1.png)
+
+
+Exercises
+========================================================
+
+
+
+Adding annotation to plots.
+========================================================
+
+Genomic annotation, such as Gene/Transcript models, play important part of visualisation of genomics data in context.
+
+Gviz provides many routes for constructing Genomic Annotation using the AnnotationTrack() constructor function.
+
+In contrast to the DataTracks AnnotationTracks allow specification for feature groups.
+
+First lets create a GRanges object with some more regions
+
+
+```r
+toGroup <- GRanges(seqnames="chr5",
+        IRanges(
+          start=c(10,500,550,2000,2500),
+          end=c(300,800,850,2300,2800)
+        ))
+names(toGroup) <- seq(1,5)
+
+toGroup
+```
+
+```
+GRanges object with 5 ranges and 0 metadata columns:
+    seqnames       ranges strand
+       <Rle>    <IRanges>  <Rle>
+  1     chr5 [  10,  300]      *
+  2     chr5 [ 500,  800]      *
+  3     chr5 [ 550,  850]      *
+  4     chr5 [2000, 2300]      *
+  5     chr5 [2500, 2800]      *
+  -------
+  seqinfo: 1 sequence from an unspecified genome; no seqlengths
+```
+
+Adding annotation to plots. Grouping (part-1)
+========================================================
+
+Now we can create the AnnotationTrack object using the constructor.
+
+Here we also provide a grouping to the **group** parameter in the AnnotationTrack function.
+
+
+```r
+annoT <- AnnotationTrack(toGroup,
+                group = c("Ann1",
+                          "Ann1",
+                          "Ann2",
+                          "Ann3",
+                          "Ann3"))
+
+plotTracks(annoT)
+```
+
+![plot of chunk unnamed-chunk-28](VizGenomicsData-figure/unnamed-chunk-28-1.png)
+
+
+Adding annotation to plots.
+========================================================
+
+We can see we have got the samples grouped by lines.
+
+But if we want to see the names we must specify the group parameter used using the **groupAnnotation** argument.
+
+
+```r
+plotTracks(annoT,groupAnnotation = "group")
+```
+
+![plot of chunk unnamed-chunk-29](VizGenomicsData-figure/unnamed-chunk-29-1.png)
+
+Adding annotation to plots. Grouping (part-2)
+========================================================
+
+We can see we have got the samples grouped by lines.
+
+But if we want to see the names we must specify the group parameter used using the **groupAnnotation** argument.
+
+
+```r
+plotTracks(annoT,groupAnnotation = "group")
+```
+
+![plot of chunk unnamed-chunk-30](VizGenomicsData-figure/unnamed-chunk-30-1.png)
+
+Adding annotation to plots. Strands and direction.
+========================================================
+
+When we created the GRanges used here we did not specify any strand information.
+
+```r
+strand(toGroup)
+```
+
+```
+factor-Rle of length 5 with 1 run
+  Lengths: 5
+  Values : *
+Levels(3): + - *
+```
+When plotted annotation without strand is plotted as a box seen in previous slides
+
+Adding annotation to plots. Strands and direction (part-2).
+========================================================
+
+Now we specify some strand information for the GRanges and replot.
+
+Arrows now indicate the strand which the features are on.
+
+
+```r
+strand(toGroup) <- c("+","+","*","-","-")
+annoT <- AnnotationTrack(toGroup,
+                group = c("Ann1",
+                          "Ann1",
+                          "Ann2",
+                          "Ann3",
+                          "Ann3"))
+
+plotTracks(annoT, groupingAnnotation="group")
+```
+
+![plot of chunk unnamed-chunk-32](VizGenomicsData-figure/unnamed-chunk-32-1.png)
+
+
+
+
