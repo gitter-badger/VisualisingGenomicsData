@@ -183,14 +183,327 @@ In the previous plots we have producing a genomic axis which allows us to consid
 
 In some contexts we may be more interested in relative distances around and between the genomic features being displayed.
 
-We can then configure the axis track to give us a relative representative of distance.
+We can then configure the axis track to give us a relative representative of distance using the **scale** parameter
 
 
 
 ```r
 plotTracks(genomeAxis,from=100,to=10100,
-           scale=0.5)
+           scale=1,labelPos="below")
 ```
 
 ![plot of chunk unnamed-chunk-7](VizGenomicsData-figure/unnamed-chunk-7-1.png)
 
+Getting started with Gviz -- Configuring the axis (part-4b)
+========================================================
+
+We may want to add only a part of the scale (such as with Google Maps) to allow the reviewer to get a sense of distance.
+
+We can specify how much of the total axis we wish to display as a scale using a value of 0 to 1 representing the proportion of scale to show.
+
+
+
+```r
+plotTracks(genomeAxis,from=100,to=10100,
+           scale=0.3)
+```
+
+![plot of chunk unnamed-chunk-8](VizGenomicsData-figure/unnamed-chunk-8-1.png)
+
+
+Getting started with Gviz -- Configuring the axis (part-4c)
+========================================================
+
+We can also provide numbers greater than 1 to the **scale** parameter which will determine, in absolute base pairs, the size of scale to display.
+
+
+```r
+plotTracks(genomeAxis,from=100,to=10100,
+           scale=2500)
+```
+
+![plot of chunk unnamed-chunk-9](VizGenomicsData-figure/unnamed-chunk-9-1.png)
+
+
+Getting started with Gviz -- Axis and Regions of Interest (part-1)
+========================================================
+
+Previously we have seen how to highlight regions of interest in the scale bar for IGV.
+
+These "regions of interest" may be user defined locations which add context to the scale and the genomics data to be displayed (e.g. Domain boundaries such as topilogically associated domains)
+
+![ROI](imgs/igv_BookMarks.png)
+
+
+Getting started with Gviz -- Axis and Regions of Interest (part-2)
+========================================================
+
+We can add "regions of interest" to the axis plotted by Gviz as we have done with IGV.
+
+To do this we will need to define some ranges to signify the positions of "regions of interest" in the linear context of our genome track.
+
+Since the plots have no apparent context for chromosomes (yet), we will use a IRanges object to specify "regions of interest" as opposed to the genome focused GRanges.
+
+You can see our material [here](http://mrccsc.github.io/Bioconductor/) on Bioconductor objects for more information on IRanges and GRanges.
+
+Brief recap (Creating an IRanges)
+========================================================
+
+To create an IRanges object we will load the IRanges library and specify vectors of **start** and **end** parameters to the **IRanges** constructor function.
+
+
+
+```r
+library(IRanges)
+regionsOfInterest <- IRanges(start=c(140,5140),end=c(2540,7540))
+names(regionsOfInterest) <- c("ROI_1","ROI_2")
+regionsOfInterest
+```
+
+```
+IRanges object with 2 ranges and 0 metadata columns:
+            start       end     width
+        <integer> <integer> <integer>
+  ROI_1       140      2540      2401
+  ROI_2      5140      7540      2401
+```
+
+Getting started with Gviz -- Axis and Regions of Interest (part-3)
+========================================================
+
+Now we have our IRanges object representing our regions of interest we can include them in our axis.
+
+We will have to recreate our axis track to allow us to include these regions of interest.
+
+Once we have updated our GenomeAxisTrack object we can plot the axis with regions of interest included.
+
+
+```r
+genomeAxis <- GenomeAxisTrack(name="MyAxis",
+                              range = regionsOfInterest)
+plotTracks(genomeAxis,from=100,to=10100)
+```
+
+![plot of chunk unnamed-chunk-11](VizGenomicsData-figure/unnamed-chunk-11-1.png)
+
+
+
+Getting started with Gviz -- Axis and Regions of Interest (part-4)
+========================================================
+
+We include the names specified in the IRanges for the regions of interest within the axis plot by specify the **showID** parameter to TRUE.
+
+
+```r
+plotTracks(genomeAxis,from=100,to=10100,
+           range=regionsOfInterest,
+           showId=T)
+```
+
+![plot of chunk unnamed-chunk-12](VizGenomicsData-figure/unnamed-chunk-12-1.png)
+
+
+Plotting regions in Gviz - Data tracks
+========================================================
+
+Now we have some fine control of the axis, it follows that we want some to display some actual data along side our axis and/or regions of interest.
+
+Gviz contains a general container for data tracks which can be created using the **DataTrack()** constructor function and associated object, **DataTrack**.
+
+Generally DataTrack may be used to display all data types with some work but best fit ranges with associated signal as a matrix (multiple regions) or vector (single sample).
+
+Lets update our IRanges object to  some score columns in the metadata columns. We can do this the **mcols** function as shown in our Bioconductor material.
+
+
+
+```r
+mcols(regionsOfInterest) <- data.frame(Sample1=c(30,20),Sample2=c(20,200))
+regionsOfInterest <- GRanges(seqnames="chr5",ranges = regionsOfInterest)
+```
+
+
+Plotting regions in Gviz - Data tracks
+========================================================
+
+Now we have the data we need, we can create a simple **DataTrack** object.
+
+
+```r
+dataROI <- DataTrack(regionsOfInterest)
+plotTracks(dataROI)
+```
+
+![plot of chunk unnamed-chunk-14](VizGenomicsData-figure/unnamed-chunk-14-1.png)
+
+
+Plotting regions in Gviz - Data tracks
+========================================================
+
+As we have seen, Data tracks make use of GRanges which are the central workhorse of Bioconductors HTS tools.
+
+This means we can take advantage of the many manipulations available in the Bioconductor tool set.
+
+Lets use on of rtracklayer's importing tools to retrieve coverage from a bigWig as a GRanges object
+
+
+
+```r
+library(rtracklayer)
+allChromosomeCoverage <- import.bw("Data/small_Sorted_SRR568129.bw",as="GRanges")
+allChromosomeCoverage
+```
+
+```
+GRanges object with 249 ranges and 1 metadata column:
+        seqnames         ranges strand |     score
+           <Rle>      <IRanges>  <Rle> | <numeric>
+    [1]     chrM [1,     16571]      * |         0
+    [2]     chr1 [1, 249250621]      * |         0
+    [3]     chr2 [1, 243199373]      * |         0
+    [4]     chr3 [1, 198022430]      * |         0
+    [5]     chr4 [1, 191154276]      * |         0
+    ...      ...            ...    ... .       ...
+  [245]    chr20 [1,  63025520]      * |         0
+  [246]    chr21 [1,  48129895]      * |         0
+  [247]    chr22 [1,  51304566]      * |         0
+  [248]     chrX [1, 155270560]      * |         0
+  [249]     chrY [1,  59373566]      * |         0
+  -------
+  seqinfo: 25 sequences from an unspecified genome
+```
+
+
+Plotting regions in Gviz - Data tracks (part 4)
+========================================================
+
+Now we have our coverage as a GRanges object we can create our DataTrack object from this.
+
+Notice we specify the chr
+
+
+```r
+accDT <- DataTrack(allChromosomeCoverage,chomosome="chr5")
+accDT 
+```
+
+```
+DataTrack 'DataTrack'
+| genome: NA
+| active chromosome: chrM
+| positions: 1
+| samples:1
+| strand: *
+There are 248 additional annotation features on 24 further chromosomes
+  chr1: 1
+  chr10: 1
+  chr11: 1
+  chr12: 1
+  chr13: 1
+  ...
+  chr7: 1
+  chr8: 1
+  chr9: 1
+  chrX: 1
+  chrY: 1
+Call seqlevels(obj) to list all available chromosomes or seqinfo(obj) for more detailed output
+Call chromosome(obj) <- 'chrId' to change the active chromosome 
+```
+
+
+Plotting regions in Gviz - Data tracks (part 5)
+========================================================
+
+To plot data now using the plotTracks() function we will specify the regions we wish to plot by specifying the chromsomes, start and end using the **chromosome**, **start** and **end** parameters.
+
+By default we will get a similar point plot to seen before.
+
+
+```r
+plotTracks(accDT,
+           from=134887451,to=134888111,
+           chromosome="chr5")
+```
+
+![plot of chunk unnamed-chunk-17](VizGenomicsData-figure/unnamed-chunk-17-1.png)
+
+
+Plotting regions in Gviz - Data tracks (part 6)
+========================================================
+
+By default we will get a similar point plot to seen before.
+
+We can adjust the type of plots we want using the **type** argument. 
+Here as with standard plotting we can specify **"l"** to get a line plot.
+
+
+
+```r
+plotTracks(accDT,
+           from=134887451,to=134888111,
+           chromosome="chr5",type="l")
+```
+
+![plot of chunk unnamed-chunk-18](VizGenomicsData-figure/unnamed-chunk-18-1.png)
+
+
+Plotting regions in Gviz - Data tracks (part 6)
+========================================================
+
+Many other types of plots are available for the DataTracks.
+
+Including filled plots using "mountain".
+
+
+
+```r
+plotTracks(accDT,
+           from=134887451,to=134888111,
+           chromosome="chr5",type="mountain")
+```
+
+![plot of chunk unnamed-chunk-19](VizGenomicsData-figure/unnamed-chunk-19-1.png)
+
+Plotting regions in Gviz - Data tracks (part 7)
+========================================================
+
+Histograms by specifying "h".
+
+
+```r
+plotTracks(accDT,
+           from=134887451,to=134888111,
+           chromosome="chr5",type="h")
+```
+
+![plot of chunk unnamed-chunk-20](VizGenomicsData-figure/unnamed-chunk-20-1.png)
+
+Plotting regions in Gviz - Data tracks (part 8)
+========================================================
+
+Or smoothed plots using "smooth".
+
+
+
+```r
+plotTracks(accDT,
+           from=134887451,to=134888111,
+           chromosome="chr5",type="smooth")
+```
+
+![plot of chunk unnamed-chunk-21](VizGenomicsData-figure/unnamed-chunk-21-1.png)
+
+Plotting regions in Gviz - Data tracks (part 9)
+========================================================
+
+and even a Heatmap using "heatmap".
+
+Notice that Gviz will automatically produce the appropriate Heatmap scale.
+
+
+```r
+plotTracks(accDT,
+           from=134887451,to=134888111,
+           chromosome="chr5",type="heatmap")
+```
+
+![plot of chunk unnamed-chunk-22](VizGenomicsData-figure/unnamed-chunk-22-1.png)
