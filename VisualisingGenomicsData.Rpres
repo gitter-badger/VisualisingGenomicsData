@@ -198,7 +198,7 @@ plotTracks(c(customMT, alTrack,alTrack2), from = afrom,to = ato,
 ```
 
 ```{r, echo=TRUE}
-afrom <- 134887024
+afrom <- 135430528
 ato <- 134888917
 
 from <- afrom

@@ -1081,21 +1081,201 @@ Overplotting, thinbox feature.
 Exercises.
 ========================================================
 
-AlignmentTracks
+SequenceTracks
 ========================================================
 
+When displaying genomics data it can be important to illustrate the underlying sequence for the genome be viewed.
+
+Gviz uses **SequenceTrack** objects to handle displaying sequencing information.
+
+First we need to get some  sequence information for our genome of interest to display. Here we will use one of the BSgenome packages specific for hg19 - **BSgenome.Hsapiens.UCSC.hg19**. This contains the full sequence for hg19 as found in UCSC
 
 
+```r
+library(BSgenome.Hsapiens.UCSC.hg19)
+BSgenome.Hsapiens.UCSC.hg19[["chr7"]]
+```
 
-Bringing in External data.
+```
+  159138663-letter "DNAString" instance
+seq: NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN...NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+```
+
+SequenceTracks - From a BSgenome object
 ========================================================
 
+We can create a **SequenceTrack** object straight from this BSgenome object using the **SequenceTrack()** constructor. 
+
+We can then plot this **SequenceTrack** as with all track using the **plotTracks()** functions. Here we specify a *from*, *to* and *chromosome* to select a region to display.
 
 
 
-Styling plots.
+```r
+sTrack <- SequenceTrack(Hsapiens)
+plotTracks(sTrack,from=134887024,to=134887074,
+           chromosome = "chr7")
+```
+
+![plot of chunk unnamed-chunk-58](VizGenomicsData-figure/unnamed-chunk-58-1.png)
+
+SequenceTracks - From a DNAstringset object
 ========================================================
 
+I can also specify the DNAstringset object we have encountered in the Bioconductor and ChIP-seq courses.
 
 
 
+```r
+dsSet <- DNAStringSet(Hsapiens[["chr7"]])
+names(dsSet) <- "chr7"
+sTrack <- SequenceTrack(dsSet)
+plotTracks(sTrack,from=134887024,to=134887074,
+           chromosome = "chr7")
+```
+
+![plot of chunk unnamed-chunk-59](VizGenomicsData-figure/unnamed-chunk-59-1.png)
+
+SequenceTracks - From a DNAstringset object
+========================================================
+
+Or even from a fasta file.
+
+Here we use an example containing only the sequence around the region we are looking at to save space. Since the sequence is only of the region of interest we need specify the sequence limits for the *from* and *to* arguments.
+
+
+
+
+
+```r
+sTrack <- SequenceTrack("Data/chr7Short.fa")
+plotTracks(sTrack,from=1,to=50,
+           chromosome = "chr7")
+```
+
+![plot of chunk unnamed-chunk-61](VizGenomicsData-figure/unnamed-chunk-61-1.png)
+
+SequenceTracks - Displaying complement sequence
+========================================================
+
+As with IGV, the sequence can be displayed as its complement. This is performed in Gviz by setting the **complement** argument to the **plotTracks()** function 
+
+
+
+SequenceTracks - Displaying strand information
+========================================================
+
+We can also add 5' to 3' direction as we have with **GenomeAxisTrack** track objects using the **add53** parameter. This allows for a method to illustrate the strand of the sequence being diplayed.
+
+
+
+SequenceTracks - Displaying strand information
+========================================================
+
+Notice the 5' and 3' labels have swapped automatically when we have specified the complement sequence.
+
+
+
+SequenceTracks - Controlling base display size
+========================================================
+
+We can control the size of bases with the **cex** parameter, as with the standard R plotting. 
+
+An interesting feature of this is that when bases may overlaps when plotted, Gviz will provide a colour representation of bases opposed to base characters themselves.
+
+
+
+```r
+plotTracks(sTrack,from=1,to=50,
+           chromosome = "chr7")
+```
+
+![plot of chunk unnamed-chunk-65](VizGenomicsData-figure/unnamed-chunk-65-1.png)
+
+```r
+plotTracks(sTrack,from=1,to=50,
+           chromosome = "chr7",
+           cex=5)
+```
+
+![plot of chunk unnamed-chunk-65](VizGenomicsData-figure/unnamed-chunk-65-2.png)
+
+
+AlignmentsTrack. 
+========================================================
+
+So far we have displayed summarised genomics data using GRanges objects or GRanges with associated metadata.
+
+A prominent feature of Gviz is that it can work with Genomic Alignments, providing methods to generate graphical summaries on the fly.
+
+Genomic Alignments are stored in Gviz within the AlignmentsTrack object.
+
+Here we can read Genomic Alignments in from a BAM file, see our file formats course material, by specifying its location.
+
+
+
+```r
+   peakReads <- AlignmentsTrack("Data/small_Sorted_SRR568129.bam")
+   peakReads
+```
+
+```
+ReferenceAlignmentsTrack 'AlignmentsTrack'
+| genome: NA
+| active chromosome: chrNA
+| referenced file: Data/small_Sorted_SRR568129.bam
+| mapping: id=id, cigar=cigar, mapq=mapq, flag=flag, isize=isize, groupid=groupid, status=status, md=md, seq=seq
+```
+
+AlignmentsTrack.  Plotting Aligned Reads in Gviz
+========================================================
+
+The **AlignmentsTrack** object can be plotted in the same manner as other Gviz tracks using **plotTracks()** function.
+
+Since the BAM file may contain information from all chromosomes we need to specify a chromsome to plot in the *chromosome* parameter and here we specify the *from* and *to* parameters too.
+
+
+```r
+   plotTracks(peakReads,
+              chromosome="chr5",
+              from=135312577,
+              to=135314146)
+```
+
+![plot of chunk unnamed-chunk-67](VizGenomicsData-figure/unnamed-chunk-67-1.png)
+
+AlignmentsTrack.  Plotting Aligned Reads in Gviz
+========================================================
+
+![plot of chunk unnamed-chunk-68](VizGenomicsData-figure/unnamed-chunk-68-1.png)
+
+
+By default AlignmentTracks are rendered as the both the reads themselve and the calculated coverage from these reads.
+
+Reads, as with AnnotationTrack objects, show the strand of the aligned read by the direction of the arrow.
+
+AlignmentsTrack.  Plotting Aligned Reads in Gviz
+========================================================
+
+The type of plot/plots produced can be controlled by the *type* argument as we have done for **DataTrack** objects.
+
+The valid types of plots for AlignmentsTrack objects are "pileup", "coverage" and "sashimi" (We'll come back to sashimi later). 
+
+The type "pileup" displays just the reads.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```
+Error in match.arg(.dpOrDefault(x, "type", .ALIGNMENT_TYPES), .ALIGNMENT_TYPES,  : 
+  'arg' should be one of "coverage", "sashimi", "pileup"
+```
