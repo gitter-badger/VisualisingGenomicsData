@@ -2088,6 +2088,18 @@ plotTracks(bgrTrack)
 
 ![plot of chunk unnamed-chunk-85](VizGenomicsData-figure/unnamed-chunk-85-1.png)
 
+Bringing in External data. Gene models through Biomart
+========================================================
+
+Once we have retrieved our filtered gene models we can plot them as before.
+
+
+```r
+plotTracks(bgrTrack)
+```
+
+![plot of chunk unnamed-chunk-86](VizGenomicsData-figure/unnamed-chunk-86-1.png)
+
 Plot schemes.
 ========================================================
 

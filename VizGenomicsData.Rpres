@@ -1323,7 +1323,16 @@ Bringing in External data. Gene models through Biomart
 
 Once we have retrieved our filtered gene models we can plot them as before.
 
-```{r, echo=T,fig.width=10,fig.height=5}
+```{r, echo=T,fig.width=20,fig.height=5}
+plotTracks(bgrTrack)
+```
+
+Bringing in External data. Gene models through Biomart
+========================================================
+
+Once we have retrieved our filtered gene models we can plot them as before.
+
+```{r, echo=T,fig.width=20,fig.height=5}
 plotTracks(bgrTrack)
 ```
 
