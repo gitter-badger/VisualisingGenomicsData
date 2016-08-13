@@ -1,0 +1,342 @@
+VisualisingGenomicsData
+========================================================
+author: MRC Clinical Sciences Centre
+date: http://mrccsc.github.io/training.html
+autosize: true
+
+Intro slides
+========================================================
+
+
+
+Topics Covered
+========================================================
+
+* Visualising high dimensional data
+  + Heatmap
+  + Principal Component Analysis
+* Meta signal of Genomic Intervals/Regions
+  + Replicate peaks
+  + Average Coverage
+  + Motif occurence
+* Exporting data to IGV
+  + Tracktables
+  + Exporting DESeq2 results to IGV
+* Visualising features in Gviz
+  + Introduction to Gviz.
+  + Plotting coverage over regions.
+  + Adding annotation.
+  + Plotting reads
+  + Plotting splice junctions.
+
+
+```{r, echo=FALSE}
+library(DESeq2)
+load("~/Desktop/short_ChIPseq/robjects/MycCounts.Rdata")
+library("DESeq2")
+
+colData <- data.frame(SampleName=paste0(colnames(countTable[,-c(3,6)]),c(1,2)),
+                      CellLine=c("ch12","ch12","mel","mel"))
+
+colnames(countTable)[-c(3,6)] <- paste0(colnames(countTable[,-c(3,6)]),c(1,2))
+dds <- DESeqDataSetFromMatrix(countData = countTable[,-c(3,6)],
+                              colData = colData,
+                              design = ~ CellLine)
+
+dds <- DESeq(dds)
+
+forPCA <- rlog(dds)
+
+test_cellline <- results(dds, contrast=c("CellLine","ch12","mel"))
+temp <- test_cellline[order(test_cellline$pvalue),]
+toPlot <- rownames(temp[1:100,])
+toPlotMat <- assay(forPCA[rownames(forPCA) %in% toPlot,])
+toPlotMat <- assay(forPCA)
+forPCAExample <- cbind(rowMeans(toPlotMat[,1:2]),rowMeans(toPlotMat[,3:4]))
+
+plot(forPCAExample)
+plot(scale(forPCAExample,center=T,scale=F))
+plot(prcomp(forPCAExample)$x)
+
+tp <- cov(t(scale(forPCAExample,center=T,scale=F)))
+
+evs <- sqrt(eigen(tp)$values)
+evecs <- eigen(tp)$vectors
+#PC <- as.matrix(t(forPCAExample)) %*% evecs
+a <- evs[1]
+b <- evs[2]
+x0 <- 0
+y0 <- 0
+alpha <- atan(evecs[ , 1][2] / evecs[ , 1][1])
+theta <- seq(0, 2 * pi, length=(1000))
+
+x <- x0 + a * cos(theta) * cos(alpha) - b * sin(theta) * sin(alpha)
+y <- y0 + a * cos(theta) * sin(alpha) + b * sin(theta) * cos(alpha)
+plot(x, y, type = "l", main = expression("x = a cos " * theta * " + " * x[0] * " and y = b sin " * theta * " + " * y[0]), asp = 1)
+arrows(0, 0, a * evecs[ , 1][2], a * evecs[ , 1][2])
+arrows(0, 0, b * evecs[ , 2][3], b * evecs[ , 2][2])
+
+ 
+```
+
+chr5:134,887,024-134,888,917
+
+Plotting Splice Junctions
+========================================================
+
+```{r, echo=FALSE}
+library(Gviz)
+library(Rsamtools)
+library(GenomicAlignments)
+afrom <- 134887024
+ato <- 134888917
+
+
+peakReads <- AlignmentsTrack("Data/small_Sorted_SRR568129.bam")
+
+temp <- readGAlignments("~/Desktop/VisualisingGenomicsData/Data/small_Sorted_SRR568129.bam")
+
+tempPos <- temp[strand(temp) == "+"]
+tempNeg <- temp[strand(temp) == "-"]
+
+posReads <- AlignmentsTrack(c(GRanges(tempPos)))
+negReads <- AlignmentsTrack(c(GRanges(tempNeg)))
+
+plotTracks(c(posReads,negReads), from = afrom,to = ato,
+           chromosome = "chr5", type = c("coverage"),fill=c("Red","Blue"))
+
+plotTracks(c(peakReads), from = afrom,to = ato,
+           chromosome = "chr5", type = c("pileup"),col.)
+
+plotTracks(c(bmt, alTrack,alTrack2), from = afrom,to = ato,
+           chromosome = "chr12", type = c("coverage","sashimi"))
+
+```
+
+
+Plotting Splice Junctions
+========================================================
+
+```{r, echo=FALSE}
+library(Gviz)
+library(Rsamtools)
+afrom <- 98986825
+ato <- 98997877
+
+indexBam("~/Desktop/VisualisingGenomicsData/Data/heart.bodyMap.bam")
+indexBam("~/Desktop/VisualisingGenomicsData/Data/liver.bodyMap.bam")
+
+alTrack <- AlignmentsTrack("~/Desktop/VisualisingGenomicsData/Data/heart.bodyMap.bam",
+                           isPaired = TRUE)
+alTrack2 <- AlignmentsTrack("~/Desktop/VisualisingGenomicsData/Data/liver.bodyMap.bam", 
+                           isPaired = TRUE)
+
+bmt <- BiomartGeneRegionTrack(genome = "hg19", chromosome = "chr12",
+                              start = afrom, end = ato,
+                              filter = list(with_ox_refseq_mrna = TRUE),
+                              stacking = "dense")
+
+
+plotTracks(c(bmt, alTrack,alTrack2), from = afrom,to = ato,
+           chromosome = "chr12", type = c("pileup"))
+
+
+plotTracks(c(bmt, alTrack,alTrack2), from = afrom,to = ato,
+           chromosome = "chr12", type = c("coverage","sashimi"))
+
+```
+
+Plotting Splice Junctions
+========================================================
+
+```{r, echo=TRUE}
+library(Gviz)
+library(Rsamtools)
+afrom <- 98986825
+ato <- 98997877
+
+indexBam("~/Desktop/VisualisingGenomicsData/Data/heart.bodyMap.bam")
+indexBam("~/Desktop/VisualisingGenomicsData/Data/liver.bodyMap.bam")
+
+alTrack <- AlignmentsTrack("~/Desktop/VisualisingGenomicsData/Data/heart.bodyMap.bam",
+                           isPaired = TRUE)
+alTrack2 <- AlignmentsTrack("~/Desktop/VisualisingGenomicsData/Data/liver.bodyMap.bam", 
+                           isPaired = TRUE)
+
+bmt <- BiomartGeneRegionTrack(genome = "hg19", chromosome = "chr12",
+                              start = afrom, end = ato,
+                              filter = list(with_ox_refseq_mrna = TRUE),
+                              stacking = "dense")
+
+plotTracks(c(bmt, alTrack,alTrack2), from = afrom,to = ato,
+           chromosome = "chr12", type = c("coverage","sashimi"))
+
+```
+
+```{r, echo=TRUE}
+library(GenomicFeatures)
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+customMT <- GeneRegionTrack(TxDb.Hsapiens.UCSC.hg19.knownGene)
+
+
+
+plotTracks(c(customMT, alTrack,alTrack2), from = afrom,to = ato,
+           chromosome = "chr12", type = c("coverage","sashimi"))
+
+```
+
+```{r, echo=TRUE}
+library(GenomicFeatures)
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+txdbFromGFF <- makeTxDbFromGFF(file = "Data/tophat2.gff")
+customMT <- GeneRegionTrack(txdbFromGFF)
+
+
+
+plotTracks(c(customMT, alTrack,alTrack2), from = afrom,to = ato,
+           chromosome = "chr12", type = c("coverage","sashimi"))
+
+```
+
+```{r, echo=TRUE}
+afrom <- 134887024
+ato <- 134888917
+
+from <- afrom
+to <- ato
+
+ conservation <- UcscTrack(genome = "hg19", chromosome = "chr5", 
+ track = "Conservation", table = "phyloP100wayAll",
+ from = from, to = to, trackType = "DataTrack",
+ start = "start", end = "end", data = "score",
+ type = "hist", window = "auto",
+ name = "Conservation")
+ plotTracks(c(conservation,peakReads), from = afrom,to = ato,
+           chromosome = "chr5", type = c("hist","coverage"),sizes = c(1,1))
+
+```
+
+```{r, echo=TRUE}
+
+afrom <- 134887024
+ato <- 134888917
+
+from <- afrom
+to <- ato
+library(BSgenome.Hsapiens.UCSC.hg19)
+sTrack <- SequenceTrack(Hsapiens,from = 134887724,to = ato)
+ plotTracks(c(conservation,peakReads,sTrack), from = afrom,to = ato,
+           chromosome = "chr5", type = c("hist","coverage"),sizes = c(1,1,0.2))
+
+```
+
+
+```{r, echo=TRUE}
+
+library(seqLogo)
+library(MotifDb)
+PotentialCTCF <- as.list(subset (MotifDb, tolower (geneSymbol) == "ctcf"))
+seqLogo(PotentialCTCF[[1]])
+temp <- matchPWM(PotentialCTCF[[1]],BSgenome.Hsapiens.UCSC.hg19[["chr5"]], min.score="70%")
+tempComp <- matchPWM(PotentialCTCF[[1]],reverseComplement(BSgenome.Hsapiens.UCSC.hg19[["chr5"]], min.score="70%")
+tempGR <- GRanges(seqnames="chr5",c(ranges(temp),ranges(tempComp)))
+
+motif <- AnnotationTrack(c(tempGR), from = afrom,to = ato,
+           chromosome = "chr5")     
+ 
+ plotTracks(c(conservation,peakReads,sTrack,motif), from = afrom,to = ato,
+           chromosome = "chr5", type = c("hist","coverage"),sizes = c(1,1,0.2,0.5))                     
+ 
+ afrom <- 134880024
+ato <- 134888917
+             
+  plotTracks(c(motif),
+           chromosome = "chr5",from = afrom,to = ato)  
+  
+  export.bed(tempGR,con = "Data/motif.bed")  
+  
+ afrom <- 135313003
+ ato <- 135313570  
+ 
+from <- afrom
+to <- ato
+
+ conservation <- UcscTrack(genome = "hg19", chromosome = "chr5", 
+ track = "Conservation", table = "phyloP100wayAll",
+ from = from, to = to, trackType = "DataTrack",
+ start = "start", end = "end", data = "score",
+ type = "hist", window = "auto",
+ name = "Conservation")
+ plotTracks(c(conservation,peakReads), from = afrom,to = ato,
+           chromosome = "chr5", type = c("hist","coverage"),sizes = c(1,1)) 
+   plotTracks(c(motif,conservation),
+           chromosome = "chr5",from = afrom,to = ato)  
+
+   peakReads <- AlignmentsTrack("Data/small_Sorted_SRR568129.bam")
+   plotTracks(c(peakReads,conservation,motif),
+           chromosome = "chr5",from = afrom,to = ato,type=c("coverage","hist"))
+
+```
+
+Alt peak with Motif
+chr5:135,313,003-135,313,570
+
+
+Matrix like-data -- Heatmap and PCA
+Image for matrices
+Similarity and Clustering
+ -- Heatmaps
+ -- gplot heatmaps
+
+Meta-profiles -- soGGi
+ -- Using BAM/GRanges to summarise signal
+ --  Using PWMs to identify motifs.
+ -- Centralising motifs
+
+Tracktables..
+Making a tracktable
+Making a bed table.
+Making a DEseq2 table
+- Peaks.
+- Genes.
+
+
+Gviz..
+
+Setting up...
+
+GRanges
+Coverage
+Annotation
+Alignments
+Exercises.
+
+detailstrack 
+sequencetrack
+overlays
+
+Biomart tracks
+UCSC tracks
+<!-- afrom <- 2960000 -->
+<!-- ato <- 3160000 -->
+<!-- alTrack <- AlignmentsTrack(system.file(package = "Gviz","extdata", "gapped.bam"), isPaired = TRUE) -->
+<!-- bmt <- BiomartGeneRegionTrack(genome = "hg19", chromosome = "chr12", -->
+<!-- start = afrom, end = ato, filter = list(with_ox_refseq_mrna = TRUE),stacking = "dense") -->
+<!-- plotTracks(c(bmt, alTrack), -->
+<!--            chromosome = "chr12", type = c("coverage","sashimi")) -->
+
+<!-- alTrack <- AlignmentsTrack("~/Desktop/VisualisingGenomicsData/Data/heart.bodyMap.bam", isPaired = TRUE) -->
+
+
+<!-- library(GenomicRanges) -->
+<!-- data(cpgIslands) -->
+<!-- class(cpgIslands) -->
+<!-- chr <- as.character(unique(seqnames(cpgIslands))) -->
+<!-- gen <- genome(cpgIslands) -->
+<!-- atrack <- AnnotationTrack(cpgIslands, name = "CpG") -->
+<!-- plotTracks(atrack) -->
+
+
+<!-- data(geneModels) -->
+<!-- grtrack <- GeneRegionTrack(geneModels, genome = gen,chromosome = chr, name = "Gene Model") -->
+<!-- plotTracks(list(grtrack)) -->
