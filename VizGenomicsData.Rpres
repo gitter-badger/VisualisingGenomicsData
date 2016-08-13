@@ -1336,6 +1336,78 @@ Once we have retrieved our filtered gene models we can plot them as before.
 plotTracks(bgrTrack)
 ```
 
+Bringing in External data. Tracks from UCSC
+========================================================
+
+A well known browser and source of genomic data and annotation is the UCSC genome browser. Gviz can create track directly from UCSC tables using the functionality from **rtracklayer** Bioconductor package.
+
+The **Ucsctrack()** constructor and object allow for the query and track construction of a variety of data types. The **Ucsctrack()** function therefore requires us to specify the track type we expect using the *trackType* parameter as well as the required UCSC table using the **track**. 
+
+
+Bringing in External data. Tracks from UCSC
+========================================================
+
+To understand which tables are available we can query the **rtracktables** package to identify track and table names.
+
+```{r, echo=T,fig.width=10,fig.height=5}
+library(rtracklayer)
+session <- browserSession()
+genome(session) <- "hg19"
+trackNames(session)
+query <- ucscTableQuery(session, "Ensembl Genes",
+                        GRangesForUCSCGenome("hg19", "chr7",
+                                             IRanges(26591341,27034958)))
+tableNames(query)
+```
+
+Bringing in External data. Tracks from UCSC
+========================================================
+
+
+```{r, echo=T,eval=F,fig.width=10,fig.height=5}
+uscsTrack <- UcscTrack(genome = "hg19",
+                       chromosome = "chr7",
+                       track = "ensGene",
+                       from = 26591341,
+                       to = 27034958,
+                       trackType = "GeneRegionTrack"
+)
+```
+
+Bringing in External data. Tracks from UCSC as DataTrack
+========================================================
+
+In the same fashion we can take advantage of other types of UCSC data.
+
+In this example we capture the Conservation in the phyloP100wayAll table over and around our previously investigated ChIP-seq reads peak.
+
+Here we specify the data to be returned as a **DataTrack** object and the display type to be "smooth"
+
+```{r, eval=F,echo=T,fig.width=10,fig.height=5}
+ conservation <- UcscTrack(genome = "hg19",
+                           chromosome = "chr5",
+                           track = "Conservation",
+                           table = "phyloP100wayAll",
+                           from = 134888917,
+                           to = 135430528,
+                           trackType = "DataTrack",
+                           start = "start",
+                           end = "end",
+                           data = "score",
+                           type = "smooth")
+
+```
+
+Bringing in External data. Tracks from UCSC as DataTrack
+========================================================
+
+With the inclusion of conservation alongside the coverage from CTCF peaks we can see an spike in conservation around the CTCF peak summit.
+
+```{r, echo=T,fig.width=10,fig.height=5}
+plotTracks(c(conservation,peakReads), from = afrom,to = ato,
+           chromosome = "chr5", type = c("hist","coverage"),sizes = c(1,1))
+```
+
 Plot schemes.
 ========================================================
 
