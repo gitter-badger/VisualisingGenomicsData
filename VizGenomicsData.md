@@ -75,11 +75,11 @@ The Gviz packages offers methods to produce publication quality plots of genomic
 Lets get started looking at using Gviz in some Biological example.
 First we need to install the package.
 
-```{r, echo=T,eval=F}
+
+```r
 ## try http:// if https:// URLs are not supported
 source("https://bioconductor.org/biocLite.R")
 biocLite("Gviz")
-
 ```
 
 
@@ -96,10 +96,15 @@ The first thing we can do therefor is set up our linear axis representing positi
 For this we use our first method from Gviz **GenomeAxisTrack()**.
 Here we use the **name** parameter set the name to be "myAxis".
 
-```{r, echo=T}
+
+```r
 library(Gviz)
 genomeAxis <- GenomeAxisTrack(name="MyAxis")
 genomeAxis
+```
+
+```
+Genome axis 'MyAxis'
 ```
 
 Getting started with Gviz -- Plotting the axis
@@ -109,9 +114,12 @@ Now we have created a **GenomeAxisTrack** track object we will wish to display t
 
 In order to display a axis track we need to set the limits of the plot *(otherwise where would it start and end?)*.
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 plotTracks(genomeAxis,from=100,to=10100)
 ```
+
+![plot of chunk unnamed-chunk-3](VizGenomicsData-figure/unnamed-chunk-3-1.png)
 
 
 
@@ -125,10 +133,13 @@ A useful feature is to add some information on the direction of the linear genom
 
 We can add labels for the 5' to 3' direction for the positive and negative strand by using the **add53** and **add35** parameters.
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 plotTracks(genomeAxis,from=100,to=10100,
            add53=T,add35=T)
 ```
+
+![plot of chunk unnamed-chunk-4](VizGenomicsData-figure/unnamed-chunk-4-1.png)
 
 
 Getting started with Gviz -- Configuring the axis (part-2)
@@ -138,10 +149,13 @@ We can also configure the resolution of the axis (albeit rather bluntly) using t
 
 This will add additional axis tick marks between those shown by default.
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 plotTracks(genomeAxis,from=100,to=10100,
            littleTicks = TRUE)
 ```
+
+![plot of chunk unnamed-chunk-5](VizGenomicsData-figure/unnamed-chunk-5-1.png)
 
 Getting started with Gviz -- Configuring the axis (part-3)
 ========================================================
@@ -154,10 +168,13 @@ Here we set the labelPos to be always below the axis
 
 
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 plotTracks(genomeAxis,from=100,to=10100,
            labelPos="below")
 ```
+
+![plot of chunk unnamed-chunk-6](VizGenomicsData-figure/unnamed-chunk-6-1.png)
 
 Getting started with Gviz -- Configuring the axis (part-4)
 ========================================================
@@ -169,10 +186,13 @@ In some contexts we may be more interested in relative distances around and betw
 We can then configure the axis track to give us a relative representative of distance using the **scale** parameter
 
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 plotTracks(genomeAxis,from=100,to=10100,
            scale=1,labelPos="below")
 ```
+
+![plot of chunk unnamed-chunk-7](VizGenomicsData-figure/unnamed-chunk-7-1.png)
 
 Getting started with Gviz -- Configuring the axis (part-4b)
 ========================================================
@@ -182,10 +202,13 @@ We may want to add only a part of the scale (such as with Google Maps) to allow 
 We can specify how much of the total axis we wish to display as a scale using a value of 0 to 1 representing the proportion of scale to show.
 
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 plotTracks(genomeAxis,from=100,to=10100,
            scale=0.3)
 ```
+
+![plot of chunk unnamed-chunk-8](VizGenomicsData-figure/unnamed-chunk-8-1.png)
 
 
 Getting started with Gviz -- Configuring the axis (part-4c)
@@ -193,10 +216,13 @@ Getting started with Gviz -- Configuring the axis (part-4c)
 
 We can also provide numbers greater than 1 to the **scale** parameter which will determine, in absolute base pairs, the size of scale to display.
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 plotTracks(genomeAxis,from=100,to=10100,
            scale=2500)
 ```
+
+![plot of chunk unnamed-chunk-9](VizGenomicsData-figure/unnamed-chunk-9-1.png)
 
 
 Getting started with Gviz -- Axis and Regions of Interest (part-1)
@@ -226,11 +252,20 @@ Brief recap (Creating an IRanges)
 To create an IRanges object we will load the IRanges library and specify vectors of **start** and **end** parameters to the **IRanges** constructor function.
 
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 library(IRanges)
 regionsOfInterest <- IRanges(start=c(140,5140),end=c(2540,7540))
 names(regionsOfInterest) <- c("ROI_1","ROI_2")
 regionsOfInterest
+```
+
+```
+IRanges object with 2 ranges and 0 metadata columns:
+            start       end     width
+        <integer> <integer> <integer>
+  ROI_1       140      2540      2401
+  ROI_2      5140      7540      2401
 ```
 
 Getting started with Gviz -- Axis and Regions of Interest (part-3)
@@ -242,11 +277,14 @@ We will have to recreate our axis track to allow us to include these regions of 
 
 Once we have updated our GenomeAxisTrack object we can plot the axis with regions of interest included.
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 genomeAxis <- GenomeAxisTrack(name="MyAxis",
                               range = regionsOfInterest)
 plotTracks(genomeAxis,from=100,to=10100)
 ```
+
+![plot of chunk unnamed-chunk-11](VizGenomicsData-figure/unnamed-chunk-11-1.png)
 
 
 
@@ -255,12 +293,14 @@ Getting started with Gviz -- Axis and Regions of Interest (part-4)
 
 We include the names specified in the IRanges for the regions of interest within the axis plot by specify the **showID** parameter to TRUE.
 
-```{r, echo=T,fig.width=10,fig.height=5}
 
+```r
 plotTracks(genomeAxis,from=100,to=10100,
            range=regionsOfInterest,
            showId=T)
 ```
+
+![plot of chunk unnamed-chunk-12](VizGenomicsData-figure/unnamed-chunk-12-1.png)
 
 
 Plotting regions in Gviz - Data tracks
@@ -275,7 +315,8 @@ Generally DataTrack may be used to display all data types with some work but bes
 Lets update our IRanges object to  some score columns in the metadata columns. We can do this the **mcols** function as shown in our Bioconductor material.
 
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 mcols(regionsOfInterest) <- data.frame(Sample1=c(30,20),Sample2=c(20,200))
 regionsOfInterest <- GRanges(seqnames="chr5",ranges = regionsOfInterest)
 ```
@@ -286,10 +327,13 @@ Plotting regions in Gviz - Data tracks
 
 Now we have the data we need, we can create a simple **DataTrack** object.
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 dataROI <- DataTrack(regionsOfInterest)
 plotTracks(dataROI)
 ```
+
+![plot of chunk unnamed-chunk-14](VizGenomicsData-figure/unnamed-chunk-14-1.png)
 
 
 Plotting regions in Gviz - Data tracks
@@ -302,10 +346,30 @@ This means we can take advantage of the many manipulations available in the Bioc
 Lets use on of rtracklayer's importing tools to retrieve coverage from a bigWig as a GRanges object
 
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 library(rtracklayer)
 allChromosomeCoverage <- import.bw("Data/small_Sorted_SRR568129.bw",as="GRanges")
 allChromosomeCoverage
+```
+
+```
+GRanges object with 249 ranges and 1 metadata column:
+        seqnames         ranges strand |     score
+           <Rle>      <IRanges>  <Rle> | <numeric>
+    [1]     chrM [1,     16571]      * |         0
+    [2]     chr1 [1, 249250621]      * |         0
+    [3]     chr2 [1, 243199373]      * |         0
+    [4]     chr3 [1, 198022430]      * |         0
+    [5]     chr4 [1, 191154276]      * |         0
+    ...      ...            ...    ... .       ...
+  [245]    chr20 [1,  63025520]      * |         0
+  [246]    chr21 [1,  48129895]      * |         0
+  [247]    chr22 [1,  51304566]      * |         0
+  [248]     chrX [1, 155270560]      * |         0
+  [249]     chrY [1,  59373566]      * |         0
+  -------
+  seqinfo: 25 sequences from an unspecified genome
 ```
 
 
@@ -316,9 +380,33 @@ Now we have our coverage as a GRanges object we can create our DataTrack object 
 
 Notice we specify the chr
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 accDT <- DataTrack(allChromosomeCoverage,chomosome="chr5")
 accDT
+```
+
+```
+DataTrack 'DataTrack'
+| genome: NA
+| active chromosome: chrM
+| positions: 1
+| samples:1
+| strand: *
+There are 248 additional annotation features on 24 further chromosomes
+  chr1: 1
+  chr10: 1
+  chr11: 1
+  chr12: 1
+  chr13: 1
+  ...
+  chr7: 1
+  chr8: 1
+  chr9: 1
+  chrX: 1
+  chrY: 1
+Call seqlevels(obj) to list all available chromosomes or seqinfo(obj) for more detailed output
+Call chromosome(obj) <- 'chrId' to change the active chromosome 
 ```
 
 
@@ -329,11 +417,14 @@ To plot data now using the plotTracks() function we will specify the regions we 
 
 By default we will get a similar point plot to seen before.
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 plotTracks(accDT,
            from=134887451,to=134888111,
            chromosome="chr5")
 ```
+
+![plot of chunk unnamed-chunk-17](VizGenomicsData-figure/unnamed-chunk-17-1.png)
 
 
 Plotting regions in Gviz - Data tracks (part 6)
@@ -345,11 +436,14 @@ We can adjust the type of plots we want using the **type** argument.
 Here as with standard plotting we can specify **"l"** to get a line plot.
 
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 plotTracks(accDT,
            from=134887451,to=134888111,
            chromosome="chr5",type="l")
 ```
+
+![plot of chunk unnamed-chunk-18](VizGenomicsData-figure/unnamed-chunk-18-1.png)
 
 
 Plotting regions in Gviz - Data tracks (part 6)
@@ -360,22 +454,28 @@ Many other types of plots are available for the DataTracks.
 Including filled plots using "mountain".
 
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 plotTracks(accDT,
            from=134887451,to=134888111,
            chromosome="chr5",type="mountain")
 ```
+
+![plot of chunk unnamed-chunk-19](VizGenomicsData-figure/unnamed-chunk-19-1.png)
 
 Plotting regions in Gviz - Data tracks (part 7)
 ========================================================
 
 Histograms by specifying "h".
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 plotTracks(accDT,
            from=134887451,to=134888111,
            chromosome="chr5",type="h")
 ```
+
+![plot of chunk unnamed-chunk-20](VizGenomicsData-figure/unnamed-chunk-20-1.png)
 
 Plotting regions in Gviz - Data tracks (part 8)
 ========================================================
@@ -383,11 +483,14 @@ Plotting regions in Gviz - Data tracks (part 8)
 Or smoothed plots using "smooth".
 
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 plotTracks(accDT,
            from=134887451,to=134888111,
            chromosome="chr5",type="smooth")
 ```
+
+![plot of chunk unnamed-chunk-21](VizGenomicsData-figure/unnamed-chunk-21-1.png)
 
 Plotting regions in Gviz - Data tracks (part 9)
 ========================================================
@@ -396,11 +499,14 @@ and even a Heatmap using "heatmap".
 
 Notice that Gviz will automatically produce the appropriate Heatmap scale.
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 plotTracks(accDT,
            from=134887451,to=134888111,
            chromosome="chr5",type="heatmap")
 ```
+
+![plot of chunk unnamed-chunk-22](VizGenomicsData-figure/unnamed-chunk-22-1.png)
 
 Plotting regions in Gviz - Additional Parameters.
 ========================================================
@@ -409,12 +515,15 @@ As with all plotting functions in R, Gviz plots can be highly customisable.
 
 Simple features such as point size and colour are easily set as for standard R plots using **sex** and **col** paramters.
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 plotTracks(accDT,
            from=134887451,to=134888111,
            chromosome="chr5",
            col="red",cex=4)
 ```
+
+![plot of chunk unnamed-chunk-23](VizGenomicsData-figure/unnamed-chunk-23-1.png)
 Full description of the parameters
 
 
@@ -426,12 +535,15 @@ Now we have shown how to construct a data track and axis track we can put them t
 To do this we simply provide the GenomeAxisTrack and DataTrack objects as vector the **plotTracks()** function.
 
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 plotTracks(c(accDT,genomeAxis),
            from=134887451,to=134888111,
            chromosome="chr5"
            )
 ```
+
+![plot of chunk unnamed-chunk-24](VizGenomicsData-figure/unnamed-chunk-24-1.png)
 Full description of the parameters
 
 Putting track togethers - Ordering tracks in plot
@@ -440,12 +552,15 @@ Putting track togethers - Ordering tracks in plot
 The order of tracks in the plot is simply defines by the order they are placed in the vector passed to **plotTracks()**
 
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 plotTracks(c(genomeAxis,accDT),
            from=134887451,to=134888111,
            chromosome="chr5"
            )
 ```
+
+![plot of chunk unnamed-chunk-25](VizGenomicsData-figure/unnamed-chunk-25-1.png)
 
 Putting track togethers - Controling height of tracks in plot
 ========================================================
@@ -458,13 +573,16 @@ If we want the axis to be 50% of the height of the Data track we specify the siz
 The order of sizes must match the order of objects they relate to.
 
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 plotTracks(c(genomeAxis,accDT),
            from=134887451,to=134888111,
            chromosome="chr5",
            sizes=c(0.5,1)
            )
 ```
+
+![plot of chunk unnamed-chunk-26](VizGenomicsData-figure/unnamed-chunk-26-1.png)
 
 
 Exercises
@@ -483,8 +601,8 @@ In contrast to the DataTracks AnnotationTracks allow specification for feature g
 
 First lets create a GRanges object with some more regions
 
-```{r, echo=T,fig.width=10,fig.height=5}
 
+```r
 toGroup <- GRanges(seqnames="chr5",
         IRanges(
           start=c(10,500,550,2000,2500),
@@ -493,7 +611,19 @@ toGroup <- GRanges(seqnames="chr5",
 names(toGroup) <- seq(1,5)
 
 toGroup
+```
 
+```
+GRanges object with 5 ranges and 0 metadata columns:
+    seqnames       ranges strand
+       <Rle>    <IRanges>  <Rle>
+  1     chr5 [  10,  300]      *
+  2     chr5 [ 500,  800]      *
+  3     chr5 [ 550,  850]      *
+  4     chr5 [2000, 2300]      *
+  5     chr5 [2500, 2800]      *
+  -------
+  seqinfo: 1 sequence from an unspecified genome; no seqlengths
 ```
 
 Adding annotation to plots. Grouping (part-1)
@@ -503,8 +633,8 @@ Now we can create the AnnotationTrack object using the constructor.
 
 Here we also provide a grouping to the **group** parameter in the AnnotationTrack function.
 
-```{r, echo=T,fig.width=10,fig.height=5}
 
+```r
 annoT <- AnnotationTrack(toGroup,
                 group = c("Ann1",
                           "Ann1",
@@ -513,8 +643,9 @@ annoT <- AnnotationTrack(toGroup,
                           "Ann3"))
 
 plotTracks(annoT)
-
 ```
+
+![plot of chunk unnamed-chunk-28](VizGenomicsData-figure/unnamed-chunk-28-1.png)
 
 
 Adding annotation to plots.
@@ -524,11 +655,12 @@ We can see we have got the samples grouped by lines.
 
 But if we want to see the names we must specify the group parameter used using the **groupAnnotation** argument.
 
-```{r, echo=T,fig.width=10,fig.height=5}
 
+```r
 plotTracks(annoT,groupAnnotation = "group")
-
 ```
+
+![plot of chunk unnamed-chunk-29](VizGenomicsData-figure/unnamed-chunk-29-1.png)
 
 Adding annotation to plots. Grouping (part-2)
 ========================================================
@@ -537,18 +669,27 @@ We can see we have got the samples grouped by lines.
 
 But if we want to see the names we must specify the group parameter used using the **groupAnnotation** argument.
 
-```{r, echo=T,fig.width=10,fig.height=5}
 
+```r
 plotTracks(annoT,groupAnnotation = "group")
-
 ```
+
+![plot of chunk unnamed-chunk-30](VizGenomicsData-figure/unnamed-chunk-30-1.png)
 
 Adding annotation to plots. Strands and direction.
 ========================================================
 
 When we created the GRanges used here we did not specify any strand information.
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 strand(toGroup)
+```
+
+```
+factor-Rle of length 5 with 1 run
+  Lengths: 5
+  Values : *
+Levels(3): + - *
 ```
 When plotted annotation without strand is plotted as a box seen in previous slides
 
@@ -559,7 +700,8 @@ Now we specify some strand information for the GRanges and replot.
 
 Arrows now indicate the strand which the features are on.
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 strand(toGroup) <- c("+","+","*","-","-")
 annoT <- AnnotationTrack(toGroup,
                 group = c("Ann1",
@@ -570,6 +712,8 @@ annoT <- AnnotationTrack(toGroup,
 
 plotTracks(annoT, groupingAnnotation="group")
 ```
+
+![plot of chunk unnamed-chunk-32](VizGenomicsData-figure/unnamed-chunk-32-1.png)
 
 Adding annotation to plots. Controlling the display density
 ========================================================
@@ -583,8 +727,7 @@ IGV allows us to control the density of these tracks in the view options by sett
 Whereas "squished" and "expands" maintains much of the information within the tracks, "collapsed" collapases overlapping features in a single displayed feature.
 
 
-```{r, echo=T,fig.width=10,fig.height=5}
-```
+
 
 Adding annotation to plots. Controlling the display density (part 2)
 ========================================================
@@ -593,29 +736,14 @@ In Gviz we have the same control over the display density of our annotation trac
 
 By default the tracks are stacked using the "squish" option to make best use of the available space.
 
-```{r, echo=F,fig.width=10,fig.height=5}
-toGroup <- GRanges(seqnames="chr5",
-        IRanges(
-          start=c(100,100,500,700,2000,2500),
-          end=c(300,300,800,1050,2300,2800)
-        ))
-names(toGroup) <- seq(1,6)
 
-#toGroup
 
-strand(toGroup) <- c("*","*","*","*","*","*")
-annoT <- AnnotationTrack(toGroup,
-                group = c("Ann1",
-                          "Ann2",
-                          "Ann1",
-                          "Ann2",
-                          "Ann3",
-                          "Ann3"))
-```
 
-```{r, echo=T,fig.width=10,fig.height=5}
+```r
 plotTracks(annoT, groupingAnnotation="group",stacking="squish")
 ```
+
+![plot of chunk unnamed-chunk-35](VizGenomicsData-figure/unnamed-chunk-35-1.png)
 
 
 Adding annotation to plots. Controlling the display density (part 3)
@@ -623,9 +751,12 @@ Adding annotation to plots. Controlling the display density (part 3)
 
 
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 plotTracks(annoT, groupingAnnotation="group",stacking="dense")
 ```
+
+![plot of chunk unnamed-chunk-36](VizGenomicsData-figure/unnamed-chunk-36-1.png)
 
 
 
@@ -641,8 +772,13 @@ Here in we can make use of feature types as well.
 We can display any feature types within our data using the features() function. Here they are unset so displayed as unknown.
 
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 feature(annoT)
+```
+
+```
+[1] "unknown" "unknown" "unknown" "unknown" "unknown" "unknown"
 ```
 
 Adding annotation to plots. Setting feature types.
@@ -652,9 +788,14 @@ We can set our own feature types for the AnnotationTrack object using the same *
 
 We can choose any feature types we wish to define.
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 feature(annoT) <- c(rep("Good",4),rep("Bad",2))
 feature(annoT)
+```
+
+```
+[1] "Good" "Good" "Good" "Good" "Bad"  "Bad" 
 ```
 
 Adding annotation to plots. Display feature types.
@@ -666,43 +807,38 @@ In GViz, we can directly specify the colours for the individual feature types wi
 
 Here we specify the "Good" features as blue and the "Bad" features as red.
 
-```{r, echo=T,fig.width=10,fig.height=5}
+
+```r
 plotTracks(annoT, featureAnnotation = "feature",
            groupAnnotation = "group",
            Good="Blue",Bad="Red")
 ```
+
+![plot of chunk unnamed-chunk-39](VizGenomicsData-figure/unnamed-chunk-39-1.png)
 
 
 GeneModelTrack
 ========================================================
 
 
-```{r, echo=T,fig.width=10,fig.height=5}
 
-```
 
 
 AlignmentTracks
 ========================================================
 
-```{r, echo=T,fig.width=10,fig.height=5}
 
-```
 
 
 Bringing in External data.
 ========================================================
 
-```{r, echo=T,fig.width=10,fig.height=5}
 
-```
 
 
 Styling plots.
 ========================================================
 
-```{r, echo=T,fig.width=10,fig.height=5}
 
-```
 
 
