@@ -318,7 +318,7 @@ Notice we specify the chr
 
 ```{r, echo=T,fig.width=10,fig.height=5}
 accDT <- DataTrack(allChromosomeCoverage,chomosome="chr5")
-accDT 
+accDT
 ```
 
 
@@ -341,7 +341,7 @@ Plotting regions in Gviz - Data tracks (part 6)
 
 By default we will get a similar point plot to seen before.
 
-We can adjust the type of plots we want using the **type** argument. 
+We can adjust the type of plots we want using the **type** argument.
 Here as with standard plotting we can specify **"l"** to get a line plot.
 
 
@@ -415,7 +415,7 @@ plotTracks(accDT,
            chromosome="chr5",
            col="red",cex=4)
 ```
-Full description of the parameters 
+Full description of the parameters
 
 
 Putting track togethers - Axis and Data
@@ -432,7 +432,7 @@ plotTracks(c(accDT,genomeAxis),
            chromosome="chr5"
            )
 ```
-Full description of the parameters 
+Full description of the parameters
 
 Putting track togethers - Ordering tracks in plot
 ========================================================
@@ -571,6 +571,61 @@ annoT <- AnnotationTrack(toGroup,
 plotTracks(annoT, groupingAnnotation="group")
 ```
 
+Adding annotation to plots. Controlling the display density
+========================================================
 
+In the IGV course we saw how you could control the display density of certain tracks. 
+
+Annotation tracks are often stored in files as the general feature format (see our previous course). 
+
+IGV allows us to control the density of these tracks in the view options by setting to "collapsed", "expanded" or "squished".
+
+Whereas "squished" and "expands" maintains much of the information within the tracks, "collapsed" collapases overlapping features in a single displayed feature.
+
+
+```{r, echo=T,fig.width=10,fig.height=5}
+```
+
+Adding annotation to plots. Controlling the display density (part 2)
+========================================================
+
+In Gviz we have the same control over the display density of our annotation tracks.
+
+
+```{r, echo=T,fig.width=10,fig.height=5}
+```
+
+
+GeneModelTrack
+========================================================
+
+
+```{r, echo=T,fig.width=10,fig.height=5}
+
+```
+
+
+AlignmentTracks
+========================================================
+
+```{r, echo=T,fig.width=10,fig.height=5}
+
+```
+
+
+Bringing in External data.
+========================================================
+
+```{r, echo=T,fig.width=10,fig.height=5}
+
+```
+
+
+Styling plots.
+========================================================
+
+```{r, echo=T,fig.width=10,fig.height=5}
+
+```
 
 
