@@ -155,20 +155,22 @@ library(Rsamtools)
 afrom <- 98986825
 ato <- 98997877
 
-indexBam("~/Desktop/VisualisingGenomicsData/Data/heart.bodyMap.bam")
-indexBam("~/Desktop/VisualisingGenomicsData/Data/liver.bodyMap.bam")
-
-alTrack <- AlignmentsTrack("~/Desktop/VisualisingGenomicsData/Data/heart.bodyMap.bam",
+alTrack <- AlignmentsTrack("Data/heart.bodyMap.bam",
                            isPaired = TRUE)
-alTrack2 <- AlignmentsTrack("~/Desktop/VisualisingGenomicsData/Data/liver.bodyMap.bam", 
+alTrack2 <- AlignmentsTrack("Data/liver.bodyMap.bam", 
                            isPaired = TRUE)
 
 bmt <- BiomartGeneRegionTrack(genome = "hg19", chromosome = "chr12",
                               start = afrom, end = ato,
                               filter = list(with_ox_refseq_mrna = TRUE), stacking = "dense")
 
-plotTracks(c(bmt, alTrack,alTrack2), from = afrom,to = ato,
+plotTracks(c(alTrack,alTrack2), from = afrom,to = ato,
            chromosome = "chr12", type = c("coverage","sashimi"))
+
+plotTracks(c(alTrack,alTrack2), from = afrom,to = ato,
+           chromosome = "chr12")
+plotTracks(c(liverReads,heartReads), from = afrom,to = ato,
+           chromosome = "chr12")
 
 ```
 

@@ -1258,24 +1258,144 @@ AlignmentsTrack.  Plotting Aligned Reads in Gviz
 
 The type of plot/plots produced can be controlled by the *type* argument as we have done for **DataTrack** objects.
 
-The valid types of plots for AlignmentsTrack objects are "pileup", "coverage" and "sashimi" (We'll come back to sashimi later). 
+The valid types of plots for AlignmentsTrack objects are "pileup", "coverage" and "sashimi" (We've come across sashimi plots before). 
 
 The type "pileup" displays just the reads.
 
+![plot of chunk unnamed-chunk-69](VizGenomicsData-figure/unnamed-chunk-69-1.png)
+
+AlignmentsTrack.  Plotting Aligned Reads in Gviz
+========================================================
+
+The type "coverage" displays just the coverage (depth of signal over genomic positions) calculated from the genomic alignments.
+
+![plot of chunk unnamed-chunk-70](VizGenomicsData-figure/unnamed-chunk-70-1.png)
+
+AlignmentsTrack.  Plotting Aligned Reads in Gviz
+========================================================
+
+As we have seen the default display is a combination of "pileup" and "coverage".
+
+We can provide multiple *type* arguments to the **plotTracks()** function as a vector of valid types. The order in vector here does not affect the display order in panels.
+
+![plot of chunk unnamed-chunk-71](VizGenomicsData-figure/unnamed-chunk-71-1.png)
+
+AlignmentsTrack.  Plotting Aligned Reads in Gviz
+========================================================
+
+As we have seen the default display is a combination of "pileup" and "coverage".
+
+We can provide multiple *type* arguments to the **plotTracks()** function as a vector of valid types. The order in vector here does not affect the display order in panels.
+
+![plot of chunk unnamed-chunk-72](VizGenomicsData-figure/unnamed-chunk-72-1.png)
 
 
+AlignmentsTrack.  Sashimi plots
+========================================================
 
+We have seen sashimi plots in IGV when reviewing RNA-seq data.
 
+Sashimi plots display the strength of signal coming from reads spanning splice junctions and so can act to illustrate changes in exon usage between samples.
 
+In IGV, we previous made use of the Bodymap data to show alternative splicing of an exon between heart and liver.
 
+![ROI](imgs/IGV_SplicingExample.png)
 
+AlignmentsTrack.  Sashimi plots in Gviz
+========================================================
 
+To recapitulate this plot, we retrieved the subsection of Bodymap data as BAM files from the IGV tutorial datasets and brought it into the Data directory for the course.
 
+First we must create two AlignmentsTrack objects, one for each tissue's BAM file of aligned reads. 
 
+In this case since we are working with paired-end reads we must specify this by setting the *isPaired* parameter to TRUE
 
 
 
 ```
-Error in match.arg(.dpOrDefault(x, "type", .ALIGNMENT_TYPES), .ALIGNMENT_TYPES,  : 
-  'arg' should be one of "coverage", "sashimi", "pileup"
+ReferenceAlignmentsTrack 'AlignmentsTrack'
+| genome: NA
+| active chromosome: chrNA
+| referenced file: Data/liver.bodyMap.bam
+| mapping: id=id, cigar=cigar, mapq=mapq, flag=flag, isize=isize, groupid=groupid, status=status, md=md, seq=seq
 ```
+
+AlignmentsTrack.  Sashimi plots in Gviz
+========================================================
+
+As with **DataTrack** objects we can combine the AlignmentTracks as a vector for plotting with the **plotTracks()** function.
+
+By default we will display the reads and calculated coverage. Here the paired reads and split reads are illustrated by thick and thin lines respectively
+
+![plot of chunk unnamed-chunk-74](VizGenomicsData-figure/unnamed-chunk-74-1.png)
+
+AlignmentsTrack.  Sashimi plots in Gviz
+========================================================
+
+To reproduce a plot similar to that in IGV we can simply include the "sashimi" type in the *type* parameter vector, here alongside "coverage" 
+
+![plot of chunk unnamed-chunk-75](VizGenomicsData-figure/unnamed-chunk-75-1.png)
+
+AlignmentsTrack.  Highlighting genomic alignment information.
+========================================================
+
+The **AlignmentTrack** object allows for specific parameters controlling how reads are displayed to be passed to the **plotTracks()** function.
+
+Two useful functions are col.gaps and col.mates or lty.gap and lty.mates which will allow us to better disntiguish between gapped alignments (split reads) and gaps between read pairs respectively.
+
+
+![plot of chunk unnamed-chunk-76](VizGenomicsData-figure/unnamed-chunk-76-1.png)
+
+AlignmentsTrack.  Highlighting genomic alignment information.
+========================================================
+
+Similarly using lty.gap and lty.mate parameters. 
+
+Line width may also be controlled with lwd.gap and lwd.mate parameters continuing the similarities to Base R plotting.
+
+
+![plot of chunk unnamed-chunk-77](VizGenomicsData-figure/unnamed-chunk-77-1.png)
+
+AlignmentsTrack.  Highlighting mismathces to reference.
+========================================================
+
+A common purpose in visualising alignment data in broswers is review information relating to mismatches to the genome which may be related to SNPs.
+
+In order to highlight mismatches to the genome reference sequence we must first provide Gviz with some information on the reference sequence.
+
+One method for this is to attach sequence information to the AlignmentsTrack itself providing a **SequenceTrack** object to **referenceSequence** parameter to the **AlignmentsTrack()** constructor. Here we can use the one we made earlier.
+
+
+
+AlignmentsTrack.  Highlighting mismatches to reference.
+========================================================
+
+Now when we replot the pileup of reads mismatches in the reads are highlighted.
+
+![plot of chunk unnamed-chunk-79](VizGenomicsData-figure/unnamed-chunk-79-1.png)
+AlignmentsTrack.  Highlighting mismatches to reference.
+========================================================
+
+We could also specify the SequenceTrack just in the **plotTracks()** function as shown for the liver reads here. Here we simply include the relevant **SequenceTrack** object as a track to be plotted  alongside the BAM and Gviz connects the dots.
+
+![plot of chunk unnamed-chunk-80](VizGenomicsData-figure/unnamed-chunk-80-1.png)
+
+Data from GAlignments.
+Read configurations.
+SNPS.
+
+   plotTracks(c(peakReads,conservation,motif),
+           chromosome = "chr5",from = afrom,to = ato,type=c("coverage","hist"))
+
+Bringing in External data.
+========================================================
+
+
+
+
+Styling plots.
+========================================================
+
+
+
+
