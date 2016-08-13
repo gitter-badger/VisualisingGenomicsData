@@ -27,16 +27,6 @@ Topics Covered
   + Adding annotation.
   + Plotting reads
   + Plotting splice junctions.
-* Visualising high dimensional data
-  + Heatmap
-  + Principal Component Analysis
-* Meta signal of Genomic Intervals/Regions
-  + Replicate peaks
-  + Average Coverage
-  + Motif occurence
-* Exporting data to IGV
-  + Tracktables
-  + Exporting DESeq2 results to IGV
 
 Visualising Genomics Data around Genomic Features
 ========================================================
@@ -1254,21 +1244,90 @@ plotTracks(c(liverReads,sTrack),
 ```
 
 Data from GAlignments.
-Read configurations.
-SNPS.
 
-   plotTracks(c(peakReads,conservation,motif),
-           chromosome = "chr5",from = afrom,to = ato,type=c("coverage","hist"))
+
+Exercises
+===================
+
+
 
 Bringing in External data.
 ========================================================
 
-```{r, echo=T,fig.width=10,fig.height=5}
+Gviz has functions to allow us to import data from external repositories and databases.
 
+As in the IGV course, visualising genomics data in the context of additional genome information and external data held at these repositories provides a deeper insight into our own data.
+
+In this course we will look at two main methods of querying external databases-
+
+* The **UcscTrack** object and constructor
+* The **BiomartGeneRegionTrack** object and constructor.
+
+Bringing in External data. Gene models through Biomart
+========================================================
+
+We have previously seen how we can use the **biomaRt** Bioconductor package to programatically query various Biomarts (see our previous material).
+
+Gviz allows us to both query Biomart and automatically create a GeneRegionTrack using the **BiomartGeneRegionTrack** objects and **BiomartGeneRegionTrack()** constructor.
+
+Bringing in External data. Gene models through Biomart
+========================================================
+
+Here we construct a simple **BiomartGeneRegionTrack** object using the parameters to define locations of interest - "chromsome", "start","end","genome" as well as the Biomart to use, in this case Ensembl by setting the **name** parameter.
+
+```{r, echo=T,fig.width=10,fig.height=5}
+bgrTrack <- BiomartGeneRegionTrack(genome="hg19",
+                                   start=26591341,
+                                   end=27034958,
+                                   chromosome = "chr7",
+                                   name="ENSEMBL")
 ```
 
+Bringing in External data. Gene models through Biomart
+========================================================
 
-Styling plots.
+We can then plot the BiomartGeneRegionTrack as we have previous GeneRegionTracks.
+
+```{r, echo=T,fig.width=10,fig.height=5}
+plotTracks(bgrTrack)
+```
+
+Bringing in External data. Gene models through Biomart
+========================================================
+
+Gviz allows the specification of filters to the **BiomartGeneRegionTrack()** constructor using the *filter* parameter.
+
+Gviz use the **BiomaRt** Bioconductor package to query the Biomarts so we can apply the same filters as in BiomaRt, which we saw in our earlier material.
+
+```{r, echo=T,fig.width=10,fig.height=5}
+library(biomaRt)
+mart = useMart("ensembl", dataset="hsapiens_gene_ensembl")
+listFilters(mart)
+```
+
+Bringing in External data. Gene models through Biomart
+========================================================
+
+Here we select only genes which have been annotated by both havana and ensembl (so called Golden Transcripts)
+
+```{r, echo=T,fig.width=20,fig.height=5}
+bgrTrack <- BiomartGeneRegionTrack(genome="hg19",
+                                   start=26591341,
+                                   end=27034958,
+                                   chromosome = "chr7",
+                                   name="ENSEMBL",                              filter=list(source="ensembl_havana"))
+```
+
+Bringing in External data. Gene models through Biomart
+========================================================
+
+Once we have retrieved our filtered gene models we can plot them as before.
+
+```{r, echo=T,fig.width=10,fig.height=5}
+plotTracks(bgrTrack)
+```
+
+Plot schemes.
 ========================================================
 
 ```{r, echo=T,fig.width=10,fig.height=5}
