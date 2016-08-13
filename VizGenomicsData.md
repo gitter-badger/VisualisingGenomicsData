@@ -817,12 +817,269 @@ plotTracks(annoT, featureAnnotation = "feature",
 ![plot of chunk unnamed-chunk-39](VizGenomicsData-figure/unnamed-chunk-39-1.png)
 
 
-GeneModelTrack
+GeneRegionTrack
+========================================================
+
+We have seen how we can display complex annotation using the **AnnotationTrack** objects.
+
+For gene models Gviz contains a more specialised object, the **GeneRegionTrack** object.
+
+The **GeneRegionTrack** object contains additional parameters and display options most fitted for the display of gene models.
+
+Lets start by looking at some of the small set of gene models stored in the Gviz package.
+
+
+
+```r
+data(geneModels)
+head(geneModels)
+```
+
+```
+  chromosome    start      end width strand feature            gene
+1       chr7 26591441 26591829   389      + lincRNA ENSG00000233760
+2       chr7 26591458 26591829   372      + lincRNA ENSG00000233760
+3       chr7 26591515 26591829   315      + lincRNA ENSG00000233760
+4       chr7 26594428 26594538   111      + lincRNA ENSG00000233760
+5       chr7 26594428 26596819  2392      + lincRNA ENSG00000233760
+6       chr7 26594641 26594733    93      + lincRNA ENSG00000233760
+             exon      transcript     symbol
+1 ENSE00001693369 ENST00000420912 AC004947.2
+2 ENSE00001596777 ENST00000457000 AC004947.2
+3 ENSE00001601658 ENST00000430426 AC004947.2
+4 ENSE00001792454 ENST00000457000 AC004947.2
+5 ENSE00001618328 ENST00000420912 AC004947.2
+6 ENSE00001716169 ENST00000457000 AC004947.2
+```
+
+GeneRegionTrack
 ========================================================
 
 
+```
+  chromosome    start      end width strand feature            gene
+1       chr7 26591441 26591829   389      + lincRNA ENSG00000233760
+2       chr7 26591458 26591829   372      + lincRNA ENSG00000233760
+3       chr7 26591515 26591829   315      + lincRNA ENSG00000233760
+4       chr7 26594428 26594538   111      + lincRNA ENSG00000233760
+5       chr7 26594428 26596819  2392      + lincRNA ENSG00000233760
+6       chr7 26594641 26594733    93      + lincRNA ENSG00000233760
+             exon      transcript     symbol
+1 ENSE00001693369 ENST00000420912 AC004947.2
+2 ENSE00001596777 ENST00000457000 AC004947.2
+3 ENSE00001601658 ENST00000430426 AC004947.2
+4 ENSE00001792454 ENST00000457000 AC004947.2
+5 ENSE00001618328 ENST00000420912 AC004947.2
+6 ENSE00001716169 ENST00000457000 AC004947.2
+```
+
+We can see that this data.frame contains information on start, end , chromosome and strand of feature needed to position features in a linear genome.
+
+Also included are a featuretype column names "feature" and columns containing additional metadata to group by - "gene","exon","transcript","symbol".
 
 
+GeneRegionTrack - Setting up the gene model track.
+========================================================
+
+We can define a GeneRegionTrack as we would all other tracktypes, here providing a genome name, chromosome of interest and a name for the track.
+
+
+
+```r
+grtrack <- GeneRegionTrack(geneModels, genome = "hg19",
+                           chromosome = "chr7",
+                           name = "smallRegions")
+plotTracks(grtrack)
+```
+
+![plot of chunk unnamed-chunk-42](VizGenomicsData-figure/unnamed-chunk-42-1.png)
+
+GeneRegionTrack - Setting up the gene model track.
+========================================================
+
+![plot of chunk unnamed-chunk-43](VizGenomicsData-figure/unnamed-chunk-43-1.png)
+
+We can see that features here are rendered slightly differently to that of the AnnotationTrack.
+
+Here direction is illustrated by arrows in Introns and unstranslated regions shown as narrower boxes.
+
+
+GeneRegionTrack - Specialised labelling.
+========================================================
+
+Since gene models typically contain exons transcript and gene levels we can specify we wish to annotate our plots by these levels using the **transcriptAnnotation** and **exonAnnotation** parameters.
+
+To label all transcripts by gene level annotation we specify the gene column to the **transcriptAnnotation** parameter.
+
+
+![plot of chunk unnamed-chunk-44](VizGenomicsData-figure/unnamed-chunk-44-1.png)
+
+GeneRegionTrack - Specialised labelling.
+========================================================
+
+Similarly we can label transcripts by transcript level.
+
+![plot of chunk unnamed-chunk-45](VizGenomicsData-figure/unnamed-chunk-45-1.png)
+
+GeneRegionTrack - Specialised labelling.
+========================================================
+
+Or we can label using the **transcriptAnnotation** object by any arbitary column where there is, at maximum, one level per transcript.
+
+![plot of chunk unnamed-chunk-46](VizGenomicsData-figure/unnamed-chunk-46-1.png)
+
+GeneRegionTrack - Specialised labelling of exons.
+========================================================
+
+As with transcripts we can label individual features using the **exonAnnotation** parameter by any arbitary column where there is one level per **exon**.
+
+![plot of chunk unnamed-chunk-47](VizGenomicsData-figure/unnamed-chunk-47-1.png)
+
+GeneRegionTrack - Specialized display density for gene models.
+========================================================
+
+We saw that we can control the display density with AnnotationTrack objects.
+
+We can control the display density of GeneRegionTracks in a similar manner.
+
+![plot of chunk unnamed-chunk-48](VizGenomicsData-figure/unnamed-chunk-48-1.png)
+
+GeneRegionTrack - Specialized display density for gene models.
+========================================================
+
+However, since GeneRegionTrack is a special class of the Annotation object we have special parameter for dealing with display density of transcripts.
+
+The **collapseTranscript** parameter allows us a finer degree of control than that seen with **stacking** parameter.
+
+Here we set **collapseTranscript** to be true inorder to merge all overlapping transcripts. 
+
+![plot of chunk unnamed-chunk-49](VizGenomicsData-figure/unnamed-chunk-49-1.png)
+
+GeneRegionTrack - Specialized display density for gene models.
+========================================================
+
+Collapsing using the **collapseTranscripts** has summarised our transcripts into their respective gene boundaries.
+
+We have lost information on the strand however. To retain this information we need to specify a new shape for our plots using the **shape** parameter. To capture direction we use the "arrow" shape
+
+![plot of chunk unnamed-chunk-50](VizGenomicsData-figure/unnamed-chunk-50-1.png)
+
+GeneRegionTrack - Specialized display density for gene models.
+========================================================
+
+The **collapseTranscripts** function also allows us some additional options by which to collapse our transcripts.
+
+These methods maintain the intron information in the gene model and so get us closer to reproducing the "collapsed" feature in IGV.
+
+Here we may collapse transcripts to the "longest".
+
+![plot of chunk unnamed-chunk-51](VizGenomicsData-figure/unnamed-chunk-51-1.png)
+
+
+GeneRegionTrack - Specialized display density for gene models.
+========================================================
+
+Or we may specify to **collapseTranscripts** function to collapse by "meta".
+
+The "meta" option shows us a composite, lossless illustration of the gene models closer to that seen in "collapsed" IGV tracks.
+
+Here all exon information is retained.
+
+![plot of chunk unnamed-chunk-52](VizGenomicsData-figure/unnamed-chunk-52-1.png)
+
+GeneRegionTrack - Building your own gene models.
+========================================================
+
+We have seen how gene models are organised in Bioconductor using the TxDB objects.
+
+Gviz may be used in junction with TxDB objects to construct the GeneRegionTracks. 
+
+We saw in the Bioconductor and ChIPseq course that many genomes have pre-build gene annotation within the respective TxDB libraries. Here we will load a TxDb for hg19 from the  **TxDb.Hsapiens.UCSC.hg19.knownGene** library.
+
+```r
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+
+txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
+txdb
+```
+
+```
+TxDb object:
+# Db type: TxDb
+# Supporting package: GenomicFeatures
+# Data source: UCSC
+# Genome: hg19
+# Organism: Homo sapiens
+# Taxonomy ID: 9606
+# UCSC Table: knownGene
+# Resource URL: http://genome.ucsc.edu/
+# Type of Gene ID: Entrez Gene ID
+# Full dataset: yes
+# miRBase build ID: GRCh37
+# transcript_nrow: 82960
+# exon_nrow: 289969
+# cds_nrow: 237533
+# Db created by: GenomicFeatures package from Bioconductor
+# Creation time: 2015-10-07 18:11:28 +0000 (Wed, 07 Oct 2015)
+# GenomicFeatures version at creation time: 1.21.30
+# RSQLite version at creation time: 1.0.0
+# DBSCHEMAVERSION: 1.1
+```
+
+GeneRegionTrack - Building your own gene models from a TxDb.
+========================================================
+
+Now we have loaded our TxDb object and assigned it to *txdb*. We can use this TxDb object to construct our GeneRegionTrack. Here we focus on chromosome 7 again.
+
+
+```r
+customFromTxDb <- GeneRegionTrack(txdb,chromosome="chr7")
+head(customFromTxDb)
+```
+
+```
+GeneRegionTrack 'GeneRegionTrack'
+| genome: hg19
+| active chromosome: chr7
+| annotation features: 6
+```
+
+GeneRegionTrack - Building your own gene models from a TxDb.
+========================================================
+
+With our new GeneRegionTrack we can now reproduce the gene models using the Bioconductor TxDb annotation.
+
+Here the annotation is different but transcripts overlapping uc003syc are our SKAP2 gene.
+
+
+```r
+plotTracks(customFromTxDb,from=26591341,to=27034958,transcriptAnnotation="gene")
+```
+
+![plot of chunk unnamed-chunk-55](VizGenomicsData-figure/unnamed-chunk-55-1.png)
+
+GeneRegionTrack - Building your own gene models from a TxDb.
+========================================================
+
+Now by combining the ability to create our own TxDb objects from GFFs we can create a very custom GeneRegionTrack from a GFF file.
+
+
+
+```r
+library(GenomicFeatures)
+txdbFromGFF <- makeTxDbFromGFF(file = "~/Downloads/tophat2.gff")
+customFromTxDb <- GeneRegionTrack(txdbFromGFF,chromosome="chr7")
+plotTracks(customFromTxDb,from=26591341,to=27034958,transcriptAnnotation="gene")
+```
+
+![plot of chunk unnamed-chunk-56](VizGenomicsData-figure/unnamed-chunk-56-1.png)
+
+
+Overplotting, thinbox feature.
+========================================================
+
+Exercises.
+========================================================
 
 AlignmentTracks
 ========================================================

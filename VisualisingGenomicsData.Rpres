@@ -165,8 +165,7 @@ alTrack2 <- AlignmentsTrack("~/Desktop/VisualisingGenomicsData/Data/liver.bodyMa
 
 bmt <- BiomartGeneRegionTrack(genome = "hg19", chromosome = "chr12",
                               start = afrom, end = ato,
-                              filter = list(with_ox_refseq_mrna = TRUE),
-                              stacking = "dense")
+                              filter = list(with_ox_refseq_mrna = TRUE), stacking = "dense")
 
 plotTracks(c(bmt, alTrack,alTrack2), from = afrom,to = ato,
            chromosome = "chr12", type = c("coverage","sashimi"))
@@ -188,7 +187,7 @@ plotTracks(c(customMT, alTrack,alTrack2), from = afrom,to = ato,
 ```{r, echo=TRUE}
 library(GenomicFeatures)
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
-txdbFromGFF <- makeTxDbFromGFF(file = "Data/tophat2.gff")
+txdbFromGFF <- makeTxDbFromGFF(file = "~/Downloads/tophat2.gff")
 customMT <- GeneRegionTrack(txdbFromGFF)
 
 
