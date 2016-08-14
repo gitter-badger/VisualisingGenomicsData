@@ -1254,7 +1254,7 @@ We can then plot this **SequenceTrack**, as with all tracks, using the **plotTra
 ```r
 sTrack <- SequenceTrack(Hsapiens)
 plotTracks(sTrack,from=134887024,to=134887074,
-           chromosome = "chr7")
+           chromosome = "chr7",cex=2.5)
 ```
 
 ![plot of chunk unnamed-chunk-69](VizGenomicsData-figure/unnamed-chunk-69-1.png)
@@ -1263,6 +1263,15 @@ SequenceTracks - From a DNAstringset object
 ========================================================
 
 We can also specify a DNAstringset object which we have encountered in the Bioconductor and ChIP-seq courses.
+
+
+```r
+dsSet <- DNAStringSet(Hsapiens[["chr7"]])
+names(dsSet) <- "chr7"
+sTrack <- SequenceTrack(dsSet)
+plotTracks(sTrack,from=134887024,to=134887074,
+           chromosome = "chr7",cex=2.5)
+```
 
 ![plot of chunk unnamed-chunk-70](VizGenomicsData-figure/unnamed-chunk-70-1.png)
 
@@ -1281,7 +1290,7 @@ Here we use an example containing only the sequence around the region we are loo
 ```r
 sTrack <- SequenceTrack("Data/chr7Short.fa")
 plotTracks(sTrack,from=1,to=50,
-           chromosome = "chr7")
+           chromosome = "chr7",cex=3)
 ```
 
 ![plot of chunk unnamed-chunk-72](VizGenomicsData-figure/unnamed-chunk-72-1.png)
@@ -1292,6 +1301,13 @@ SequenceTracks - Displaying complement sequence
 As with IGV, the sequence can be displayed as its complement. This is performed in Gviz by setting the **complement** argument to the **plotTracks()** function to TRUE/T.
 
 
+```r
+sTrack <- SequenceTrack("Data/chr7Short.fa")
+plotTracks(sTrack,from=1,to=50,
+           chromosome = "chr7",complement=T,cex=3)
+```
+
+![plot of chunk unnamed-chunk-73](VizGenomicsData-figure/unnamed-chunk-73-1.png)
 
 SequenceTracks - Displaying strand information
 ========================================================
@@ -1299,6 +1315,14 @@ SequenceTracks - Displaying strand information
 We can also add 5' to 3' direction as we have for plotting **GenomeAxisTrack**  objects using the **add53** parameter. This allows for a method to illustrate the strand of the sequence being diplayed.
 
 
+```r
+sTrack <- SequenceTrack("Data/chr7Short.fa")
+plotTracks(sTrack,from=1,to=50,
+           chromosome = "chr7",complement=F,
+           add53=T,cex=2.5)
+```
+
+![plot of chunk unnamed-chunk-74](VizGenomicsData-figure/unnamed-chunk-74-1.png)
 
 SequenceTracks - Displaying strand information
 ========================================================
@@ -1306,6 +1330,14 @@ SequenceTracks - Displaying strand information
 Notice the 5' and 3' labels have swapped automatically when we have specified the complement sequence.
 
 
+```r
+sTrack <- SequenceTrack("Data/chr7Short.fa")
+plotTracks(sTrack,from=1,to=50,
+           chromosome = "chr7",complement=T,
+           add53=T,cex=2.5)
+```
+
+![plot of chunk unnamed-chunk-75](VizGenomicsData-figure/unnamed-chunk-75-1.png)
 
 SequenceTracks - Controlling base display size
 ========================================================
@@ -1318,7 +1350,7 @@ An interesting feature of this is that when plotted bases overlap, Gviz will pro
 
 ```r
 plotTracks(sTrack,from=1,to=50,
-           chromosome = "chr7")
+           chromosome = "chr7",cex=2.5)
 ```
 
 ![plot of chunk unnamed-chunk-76](VizGenomicsData-figure/unnamed-chunk-76-1.png)
@@ -1378,10 +1410,18 @@ Since the BAM file may contain information from all chromosomes we need to speci
 AlignmentsTrack.  Plotting Aligned Reads in Gviz
 ========================================================
 
+
+```r
+   plotTracks(peakReads,
+              chromosome="chr5",
+              from=135312577,
+              to=135314146)
+```
+
 ![plot of chunk unnamed-chunk-79](VizGenomicsData-figure/unnamed-chunk-79-1.png)
 
 
-By default AlignmentTracks are rendered as the both the reads themselve and the calculated coverage from these reads.
+By default **AlignmentTrack**s are rendered as the both the reads themselves and the calculated coverage/signal depth from these reads.
 
 Reads, as with AnnotationTrack objects, show the strand of the aligned read by the direction of the arrow.
 
@@ -1390,9 +1430,18 @@ AlignmentsTrack.  Plotting Aligned Reads in Gviz
 
 The type of plot/plots produced can be controlled by the *type* argument as we have done for **DataTrack** objects.
 
-The valid types of plots for AlignmentsTrack objects are "pileup", "coverage" and "sashimi" (We've come across sashimi plots before). 
+The valid types of plots for AlignmentsTrack objects are "pileup", "coverage" and "sashimi" *(We've come across sashimi plots before)*. 
 
 The type "pileup" displays just the reads.
+
+
+```r
+   plotTracks(peakReads,
+              chromosome="chr5",
+              from=135312577,
+              to=135314146,
+              type="pileup")
+```
 
 ![plot of chunk unnamed-chunk-80](VizGenomicsData-figure/unnamed-chunk-80-1.png)
 
@@ -1401,6 +1450,15 @@ AlignmentsTrack.  Plotting Aligned Reads in Gviz
 
 The type "coverage" displays just the coverage (depth of signal over genomic positions) calculated from the genomic alignments.
 
+
+```r
+   plotTracks(peakReads,
+              chromosome="chr5",
+              from=135312577,
+              to=135314146,
+              type="coverage")
+```
+
 ![plot of chunk unnamed-chunk-81](VizGenomicsData-figure/unnamed-chunk-81-1.png)
 
 AlignmentsTrack.  Plotting Aligned Reads in Gviz
@@ -1408,35 +1466,29 @@ AlignmentsTrack.  Plotting Aligned Reads in Gviz
 
 As we have seen the default display is a combination of "pileup" and "coverage".
 
-We can provide multiple *type* arguments to the **plotTracks()** function as a vector of valid types. The order in vector here does not affect the display order in panels.
+We can provide multiple *type* arguments to the **plotTracks()** function as a vector of valid types. The order in vector *here* does not affect the display order in panels.
 
 ![plot of chunk unnamed-chunk-82](VizGenomicsData-figure/unnamed-chunk-82-1.png)
 
-AlignmentsTrack.  Plotting Aligned Reads in Gviz
-========================================================
-
-As we have seen the default display is a combination of "pileup" and "coverage".
-
-We can provide multiple *type* arguments to the **plotTracks()** function as a vector of valid types. The order in vector here does not affect the display order in panels.
-
-![plot of chunk unnamed-chunk-83](VizGenomicsData-figure/unnamed-chunk-83-1.png)
 
 
 AlignmentsTrack.  Sashimi plots
 ========================================================
 
-We have seen sashimi plots in IGV when reviewing RNA-seq data.
+We have seen [sashimi plots in IGV](http://mrccsc.github.io/IGV_course/igv.html#/53) when reviewing RNA-seq data.
 
 Sashimi plots display the strength of signal coming from reads spanning splice junctions and so can act to illustrate changes in exon usage between samples.
 
-In IGV, we previous made use of the Bodymap data to show alternative splicing of an exon between heart and liver.
+In IGV, we previous made use of the **BodyMap** data to show alternative splicing of an exon between heart and liver.
 
-![ROI](imgs/IGV_SplicingExample.png)
+<div align="center">
+<img src="imgs/IGV_SplicingExample.png" alt="offset" height="600" width="1000">
+</div>
 
 AlignmentsTrack.  Sashimi plots in Gviz
 ========================================================
 
-To recapitulate this plot, we retrieved the subsection of Bodymap data as BAM files from the IGV tutorial datasets and brought it into the Data directory for the course.
+To recapitulate this plot, we have retrieved the subsection of **BodyMap** data as BAM files from the IGV tutorial datasets and brought it into the Data directory for the course for you.
 
 First we must create two AlignmentsTrack objects, one for each tissue's BAM file of aligned reads. 
 
@@ -1455,28 +1507,52 @@ ReferenceAlignmentsTrack 'AlignmentsTrack'
 AlignmentsTrack.  Sashimi plots in Gviz
 ========================================================
 
-As with **DataTrack** objects we can combine the AlignmentTracks as a vector for plotting with the **plotTracks()** function.
+As with **DataTrack** objects we can combine the **AlignmentTrack**s as a vector for plotting with the **plotTracks()** function.
 
-By default we will display the reads and calculated coverage. Here the paired reads and split reads are illustrated by thick and thin lines respectively
+By default we will display the reads and calculated coverage. Here the paired reads and split reads are illustrated by thick and thin lines respectively.
 
-![plot of chunk unnamed-chunk-85](VizGenomicsData-figure/unnamed-chunk-85-1.png)
+
+```r
+plotTracks(c(heartReads,liverReads),
+           chromosome="chr12",
+           from=98986825,to=98997877)
+```
+
+![plot of chunk unnamed-chunk-84](VizGenomicsData-figure/unnamed-chunk-84-1.png)
 
 AlignmentsTrack.  Sashimi plots in Gviz
 ========================================================
 
 To reproduce a plot similar to that in IGV we can simply include the "sashimi" type in the *type* parameter vector, here alongside "coverage" 
 
-![plot of chunk unnamed-chunk-86](VizGenomicsData-figure/unnamed-chunk-86-1.png)
+
+```r
+plotTracks(c(heartReads,liverReads),
+           chromosome="chr12",
+           from=98986825,
+           to=98997877,
+           type=c("coverage","sashimi"))
+```
+
+![plot of chunk unnamed-chunk-85](VizGenomicsData-figure/unnamed-chunk-85-1.png)
 
 AlignmentsTrack.  Highlighting genomic alignment information.
 ========================================================
 
 The **AlignmentTrack** object allows for specific parameters controlling how reads are displayed to be passed to the **plotTracks()** function.
 
-Two useful functions are col.gaps and col.mates or lty.gap and lty.mates which will allow us to better disntiguish between gapped alignments (split reads) and gaps between read pairs respectively.
+A few useful parameters are **col.gaps** and **col.mates** or **lty.gap** and **lty.mates** which will allow us to better distinguish between gapped alignments (split reads) and gaps between read pairs respectively.
 
 
-![plot of chunk unnamed-chunk-87](VizGenomicsData-figure/unnamed-chunk-87-1.png)
+
+```r
+plotTracks(c(liverReads),
+           chromosome="chr12",
+           from=98986825,to=98997877,
+           col.gap="Red",col.mate="Blue")
+```
+
+![plot of chunk unnamed-chunk-86](VizGenomicsData-figure/unnamed-chunk-86-1.png)
 
 AlignmentsTrack.  Highlighting genomic alignment information.
 ========================================================
@@ -1486,33 +1562,62 @@ Similarly using lty.gap and lty.mate parameters.
 Line width may also be controlled with lwd.gap and lwd.mate parameters continuing the similarities to Base R plotting.
 
 
-![plot of chunk unnamed-chunk-88](VizGenomicsData-figure/unnamed-chunk-88-1.png)
 
-AlignmentsTrack.  Highlighting mismathces to reference.
+```r
+plotTracks(c(liverReads),
+           chromosome="chr12",
+           from=98986825,to=98997877,
+           lty.gap=2,lty.mate=1)
+```
+
+![plot of chunk unnamed-chunk-87](VizGenomicsData-figure/unnamed-chunk-87-1.png)
+
+AlignmentsTrack.  Highlighting mismatches to reference.
 ========================================================
 
 A common purpose in visualising alignment data in broswers is review information relating to mismatches to the genome which may be related to SNPs.
 
 In order to highlight mismatches to the genome reference sequence we must first provide Gviz with some information on the reference sequence.
 
-One method for this is to attach sequence information to the AlignmentsTrack itself providing a **SequenceTrack** object to **referenceSequence** parameter to the **AlignmentsTrack()** constructor. Here we can use the one we made earlier.
+One method for this is to attach sequence information to the **AlignmentsTrack** itself by providing a **SequenceTrack** object to **referenceSequence** parameter in the **AlignmentsTrack()** constructor. Here we can use the **SequenceTrack** object we made earlier.
 
 
+```r
+sTrack <- SequenceTrack(Hsapiens)
+heartReads <- AlignmentsTrack("Data/heart.bodyMap.bam",
+                           isPaired = TRUE,
+                           referenceSequence=sTrack)
+```
 
 AlignmentsTrack.  Highlighting mismatches to reference.
 ========================================================
 
-Now when we replot the pileup of reads mismatches in the reads are highlighted.
+Now when we can replot the pileup of reads where mismatches in the reads are highlighted.
+
+
+```r
+plotTracks(heartReads,
+           chromosome="chr12",
+           from=98987800,to=98987977,
+           type="pileup")
+```
+
+![plot of chunk unnamed-chunk-89](VizGenomicsData-figure/unnamed-chunk-89-1.png)
+AlignmentsTrack.  Highlighting mismatches to reference.
+========================================================
+
+We could also specify the SequenceTrack in the **plotTracks()** function as shown for the liver reads example here. Here we simply include the relevant **SequenceTrack** object as a track to be plotted  alongside the BAM and Gviz connects the dots.
+
+
+```r
+plotTracks(c(liverReads,sTrack),
+           chromosome="chr12",
+           from=98987800,
+           to=98987977,
+           type="pileup")
+```
 
 ![plot of chunk unnamed-chunk-90](VizGenomicsData-figure/unnamed-chunk-90-1.png)
-AlignmentsTrack.  Highlighting mismatches to reference.
-========================================================
-
-We could also specify the SequenceTrack just in the **plotTracks()** function as shown for the liver reads here. Here we simply include the relevant **SequenceTrack** object as a track to be plotted  alongside the BAM and Gviz connects the dots.
-
-![plot of chunk unnamed-chunk-91](VizGenomicsData-figure/unnamed-chunk-91-1.png)
-
-Data from GAlignments.
 
 
 Exercises
@@ -1522,6 +1627,7 @@ Exercises
 
 Bringing in External data.
 ========================================================
+id: externaldata
 
 Gviz has functions to allow us to import data from external repositories and databases.
 
@@ -1529,15 +1635,16 @@ As in the IGV course, visualising genomics data in the context of additional gen
 
 In this course we will look at two main methods of querying external databases-
 
-* The **UcscTrack** object and constructor
 * The **BiomartGeneRegionTrack** object and constructor.
+* The **UcscTrack** object and constructor
+
 
 Bringing in External data. Gene models through Biomart
 ========================================================
 
 We have previously seen how we can use the **biomaRt** Bioconductor package to programatically query various Biomarts (see our previous material).
 
-Gviz allows us to both query Biomart and automatically create a GeneRegionTrack using the **BiomartGeneRegionTrack** objects and **BiomartGeneRegionTrack()** constructor.
+Gviz allows us to both query Biomarts and automatically create a GeneRegionTrack using the **BiomartGeneRegionTrack** objects and **BiomartGeneRegionTrack()** constructor.
 
 Bringing in External data. Gene models through Biomart
 ========================================================
@@ -1563,14 +1670,14 @@ We can then plot the BiomartGeneRegionTrack as we have previous GeneRegionTracks
 plotTracks(bgrTrack)
 ```
 
-![plot of chunk unnamed-chunk-93](VizGenomicsData-figure/unnamed-chunk-93-1.png)
+![plot of chunk unnamed-chunk-92](VizGenomicsData-figure/unnamed-chunk-92-1.png)
 
 Bringing in External data. Gene models through Biomart
 ========================================================
 
-Gviz allows the specification of filters to the **BiomartGeneRegionTrack()** constructor using the *filter* parameter.
+Gviz allows the specification of filters in the **BiomartGeneRegionTrack()** constructor using the *filter* parameter.
 
-Gviz use the **BiomaRt** Bioconductor package to query the Biomarts so we can apply the same filters as in BiomaRt, which we saw in our earlier material.
+Gviz uses the **BiomaRt** Bioconductor package to query the Biomarts so we can apply the same filters as in **BiomaRt** (which we saw in our earlier material).
 
 
 ```r
@@ -2207,7 +2314,7 @@ listFilters(mart)
 Bringing in External data. Gene models through Biomart
 ========================================================
 
-Here we select only genes which have been annotated by both havana and ensembl (so called Golden Transcripts)
+Here we select only genes which have been annotated by both havana and ensembl (so called *Golden Transcripts*)
 
 
 ```r
@@ -2215,7 +2322,8 @@ bgrTrack <- BiomartGeneRegionTrack(genome="hg19",
                                    start=26591341,
                                    end=27034958,
                                    chromosome = "chr7",
-                                   name="ENSEMBL",                              filter=list(source="ensembl_havana"))
+                                   name="ENSEMBL",              
+                                  filter=list(source="ensembl_havana"))
 ```
 
 Bringing in External data. Gene models through Biomart
@@ -2228,26 +2336,14 @@ Once we have retrieved our filtered gene models we can plot them as before.
 plotTracks(bgrTrack)
 ```
 
-![plot of chunk unnamed-chunk-96](VizGenomicsData-figure/unnamed-chunk-96-1.png)
-
-Bringing in External data. Gene models through Biomart
-========================================================
-
-Once we have retrieved our filtered gene models we can plot them as before.
-
-
-```r
-plotTracks(bgrTrack)
-```
-
-![plot of chunk unnamed-chunk-97](VizGenomicsData-figure/unnamed-chunk-97-1.png)
+![plot of chunk unnamed-chunk-95](VizGenomicsData-figure/unnamed-chunk-95-1.png)
 
 Bringing in External data. Tracks from UCSC
 ========================================================
 
-A well known browser and source of genomic data and annotation is the UCSC genome browser. Gviz can create track directly from UCSC tables using the functionality from **rtracklayer** Bioconductor package.
+A well known browser and source of genomic data and annotation is the [UCSC genome browser](https://genome.ucsc.edu/). Gviz can create track directly from UCSC tables using the functionality from **rtracklayer** Bioconductor package.
 
-The **Ucsctrack()** constructor and object allow for the query and track construction of a variety of data types. The **Ucsctrack()** function therefore requires us to specify the track type we expect using the *trackType* parameter as well as the required UCSC table using the **track**. 
+The **Ucsctrack()** constructor and object allow for the query and track construction of a variety of data types. The **Ucsctrack()** function therefore requires us to specify the track type we expect using the *trackType* parameter as well as the required UCSC table using the **track** parameter. 
 
 
 Bringing in External data. Tracks from UCSC
@@ -2477,6 +2573,22 @@ Bringing in External data. Tracks from UCSC
 ========================================================
 
 
+```r
+query <- ucscTableQuery(session, "Ensembl Genes",
+                        GRangesForUCSCGenome("hg19", "chr7",
+                                             IRanges(26591341,27034958)))
+tableNames(query)
+```
+
+```
+[1] "ensGene"           "ccdsInfo"          "ensGtp"           
+[4] "ensPep"            "ensemblSource"     "ensemblToGeneName"
+[7] "knownToEnsembl"   
+```
+Bringing in External data. Tracks from UCSC
+========================================================
+
+
 
 ```r
 ucscTrack <- UcscTrack(genome = "hg19",
@@ -2494,40 +2606,62 @@ ucscTrack <- UcscTrack(genome = "hg19",
 )
 ```
 
-Bringing in External data. Tracks from UCSC as DataTrack
+
+To build the UCSC annotation as a **GeneRegionTrack** we must specify some information specific to **GeneRegionTrack** objects. This includes the "rstarts" and "rends". You can consult the help for **GeneRegionTrack()** (*?GeneRegionTrack to see from in R*) to see full parameters required for **UcscTrack** objects.
+
+Bringing in External data. Tracks from UCSC
 ========================================================
 
-In the same fashion we can take advantage of other types of UCSC data.
+Now we can compare the Ensembl gene builds from the two different sources. 
 
-In this example we capture the Conservation in the phyloP100wayAll table over and around our previously investigated ChIP-seq reads peak.
-
-Here we specify the data to be returned as a **DataTrack** object and the display type to be "smooth"
+Notable differences in the annotation include the absense of some transcipts due to the additional filter applied in our **BiomartGeneRegionTrack** object creation.
 
 
 ```r
-from <- 135313003
-to <- 135313570
-
-conservationTrack <- UcscTrack(genome = "hg19", chromosome = "chr5",
-track = "Conservation", table = "phyloP100wayAll",
-from = from, to = to, trackType = "DataTrack",
-start = "start", end = "end", data = "score",
-type = "hist", window = "auto", col.histogram = "darkblue",
-fill.histogram = "darkblue", ylim = c(-3.7, 4),
-name = "Conservation")
+plotTracks(c(bgrTrack,ucscTrack),
+           from = 26591341,to = 27034958)
 ```
+
+![plot of chunk unnamed-chunk-100](VizGenomicsData-figure/unnamed-chunk-100-1.png)
+
 
 Bringing in External data. Tracks from UCSC as DataTrack
 ========================================================
 
-With the inclusion of conservation alongside the coverage from CTCF peaks we can see an spike in conservation around the CTCF peak summit.
+By the same method we can take advantage of other types of UCSC data.
+
+In this example we capture the Conservation in the phyloP100wayAll table over and around our previously investigated ChIP-seq reads peak.
+
+Here we specify the data to be returned as a **DataTrack** object and the display type to be "hist". Here we are creating a **DataTrack** so would consult **DataTrack()** help *(?DataTrack)* to get full parameter list.
 
 
-
-
-
-
+```r
+conservationTrack <- UcscTrack(genome = "hg19", chromosome = "chr5",track = "Conservation", table = "phyloP100wayAll",from = 135313003, to = 135313570, trackType = "DataTrack",start = "start", end = "end", data = "score",type = "hist", window = "auto", col.histogram = "darkblue",fill.histogram = "darkblue", ylim = c(-3.7, 4),name = "Conservation")
 ```
-Error in plotTracks(c(conservationTrack, peakReads), from = from, to = to,  : 
-  object 'conservationTrack' not found
+
+
+Bringing in External data. Tracks from UCSC as DataTrack
+========================================================
+
+With the inclusion of conservation alongside the coverage from CTCF peaks we can see an spike in conservation around the CTCF peak summit. We include a relative scale and increase the size of text for completeness.
+
+
+
+
+
+
+```r
+plotTracks(c(conservationTrack,peakReads,genomeAxis),
+           from=135313003,
+           to=135313570,
+           chromosome = "chr5",
+           type = c("hist","coverage"),
+           sizes = c(1,1,0.2),
+           cex=2)
 ```
+
+![plot of chunk unnamed-chunk-104](VizGenomicsData-figure/unnamed-chunk-104-1.png)
+
+Exercises
+===============
+
