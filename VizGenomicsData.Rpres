@@ -386,7 +386,14 @@ Getting started with Gviz -- Axis and Regions of Interest (part-4)
 
 We include the names specified in the IRanges for the regions of interest within the axis plot by specify the **showID** parameter to TRUE.
 
-```{r, echo=T,fig.width=10,fig.height=5}
+```{r, echo=F,fig.width=23,fig.height=5}
+
+plotTracks(genomeAxis,from=100,to=10100,
+           range=regionsOfInterest,
+           showId=T,cex=3,col.id="black")
+```
+
+```{r, echo=T,eval=F,fig.width=10,fig.height=5}
 
 plotTracks(genomeAxis,from=100,to=10100,
            range=regionsOfInterest,

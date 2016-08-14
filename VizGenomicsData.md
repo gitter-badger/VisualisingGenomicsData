@@ -383,14 +383,14 @@ Getting started with Gviz -- Axis and Regions of Interest (part-4)
 
 We include the names specified in the IRanges for the regions of interest within the axis plot by specify the **showID** parameter to TRUE.
 
+![plot of chunk unnamed-chunk-21](VizGenomicsData-figure/unnamed-chunk-21-1.png)
+
 
 ```r
 plotTracks(genomeAxis,from=100,to=10100,
            range=regionsOfInterest,
            showId=T)
 ```
-
-![plot of chunk unnamed-chunk-21](VizGenomicsData-figure/unnamed-chunk-21-1.png)
 
 
 Plotting regions in Gviz - Data tracks
@@ -423,7 +423,7 @@ dataROI <- DataTrack(regionsOfInterest)
 plotTracks(dataROI)
 ```
 
-![plot of chunk unnamed-chunk-24](VizGenomicsData-figure/unnamed-chunk-24-1.png)
+![plot of chunk unnamed-chunk-25](VizGenomicsData-figure/unnamed-chunk-25-1.png)
 
 Plotting regions in Gviz - Data tracks
 ========================================================
@@ -513,7 +513,7 @@ plotTracks(accDT,
            chromosome="chr5")
 ```
 
-![plot of chunk unnamed-chunk-27](VizGenomicsData-figure/unnamed-chunk-27-1.png)
+![plot of chunk unnamed-chunk-28](VizGenomicsData-figure/unnamed-chunk-28-1.png)
 
 
 Plotting regions in Gviz - Data tracks (part 6)
@@ -530,7 +530,7 @@ plotTracks(accDT,
            chromosome="chr5",type="l")
 ```
 
-![plot of chunk unnamed-chunk-28](VizGenomicsData-figure/unnamed-chunk-28-1.png)
+![plot of chunk unnamed-chunk-29](VizGenomicsData-figure/unnamed-chunk-29-1.png)
 
 
 Plotting regions in Gviz - Data tracks (part 6)
@@ -547,7 +547,7 @@ plotTracks(accDT,
            chromosome="chr5",type="smooth")
 ```
 
-![plot of chunk unnamed-chunk-29](VizGenomicsData-figure/unnamed-chunk-29-1.png)
+![plot of chunk unnamed-chunk-30](VizGenomicsData-figure/unnamed-chunk-30-1.png)
 
 
 
@@ -563,7 +563,7 @@ plotTracks(accDT,
            chromosome="chr5",type="h")
 ```
 
-![plot of chunk unnamed-chunk-30](VizGenomicsData-figure/unnamed-chunk-30-1.png)
+![plot of chunk unnamed-chunk-31](VizGenomicsData-figure/unnamed-chunk-31-1.png)
 
 Plotting regions in Gviz - Data tracks (part 8)
 ========================================================
@@ -577,7 +577,7 @@ plotTracks(accDT,
            chromosome="chr5",type="mountain")
 ```
 
-![plot of chunk unnamed-chunk-31](VizGenomicsData-figure/unnamed-chunk-31-1.png)
+![plot of chunk unnamed-chunk-32](VizGenomicsData-figure/unnamed-chunk-32-1.png)
 
 
 Plotting regions in Gviz - Data tracks (part 9)
@@ -594,7 +594,7 @@ plotTracks(accDT,
            chromosome="chr5",type="heatmap")
 ```
 
-![plot of chunk unnamed-chunk-32](VizGenomicsData-figure/unnamed-chunk-32-1.png)
+![plot of chunk unnamed-chunk-33](VizGenomicsData-figure/unnamed-chunk-33-1.png)
 
 Plotting regions in Gviz - Additional Parameters.
 ========================================================
@@ -611,7 +611,7 @@ plotTracks(accDT,
            col="red",cex=4)
 ```
 
-![plot of chunk unnamed-chunk-33](VizGenomicsData-figure/unnamed-chunk-33-1.png)
+![plot of chunk unnamed-chunk-34](VizGenomicsData-figure/unnamed-chunk-34-1.png)
 
 
 Putting track togethers - Axis and Data
@@ -630,7 +630,7 @@ plotTracks(c(accDT,genomeAxis),
            )
 ```
 
-![plot of chunk unnamed-chunk-34](VizGenomicsData-figure/unnamed-chunk-34-1.png)
+![plot of chunk unnamed-chunk-35](VizGenomicsData-figure/unnamed-chunk-35-1.png)
 
 Putting track togethers - Ordering tracks in plot
 ========================================================
@@ -646,7 +646,7 @@ plotTracks(c(genomeAxis,accDT),
            )
 ```
 
-![plot of chunk unnamed-chunk-35](VizGenomicsData-figure/unnamed-chunk-35-1.png)
+![plot of chunk unnamed-chunk-36](VizGenomicsData-figure/unnamed-chunk-36-1.png)
 
 Putting track togethers - Controling height of tracks in plot
 ========================================================
@@ -668,7 +668,7 @@ plotTracks(c(genomeAxis,accDT),
            )
 ```
 
-![plot of chunk unnamed-chunk-36](VizGenomicsData-figure/unnamed-chunk-36-1.png)
+![plot of chunk unnamed-chunk-37](VizGenomicsData-figure/unnamed-chunk-37-1.png)
 
 
 Exercises
@@ -729,7 +729,7 @@ annoT <- AnnotationTrack(toGroup,
 plotTracks(annoT)
 ```
 
-![plot of chunk unnamed-chunk-38](VizGenomicsData-figure/unnamed-chunk-38-1.png)
+![plot of chunk unnamed-chunk-39](VizGenomicsData-figure/unnamed-chunk-39-1.png)
 
 
 Adding annotation to plots.
@@ -744,7 +744,7 @@ But if we want to see the names we must specify the group parameter by  using th
 plotTracks(annoT,groupAnnotation = "group")
 ```
 
-![plot of chunk unnamed-chunk-39](VizGenomicsData-figure/unnamed-chunk-39-1.png)
+![plot of chunk unnamed-chunk-40](VizGenomicsData-figure/unnamed-chunk-40-1.png)
 
 Adding annotation to plots. Grouping (part-2)
 ========================================================
@@ -758,7 +758,7 @@ But if we want to see the names we must specify the group parameter used using t
 plotTracks(annoT,groupAnnotation = "group")
 ```
 
-![plot of chunk unnamed-chunk-40](VizGenomicsData-figure/unnamed-chunk-40-1.png)
+![plot of chunk unnamed-chunk-41](VizGenomicsData-figure/unnamed-chunk-41-1.png)
 
 Adding annotation to plots. Strands and direction.
 ========================================================
@@ -799,7 +799,7 @@ annoT <- AnnotationTrack(toGroup,
 plotTracks(annoT, groupingAnnotation="group")
 ```
 
-![plot of chunk unnamed-chunk-42](VizGenomicsData-figure/unnamed-chunk-42-1.png)
+![plot of chunk unnamed-chunk-43](VizGenomicsData-figure/unnamed-chunk-43-1.png)
 
 Adding annotation to plots. Controlling the display density
 ========================================================
@@ -829,7 +829,7 @@ By default the tracks are stacked using the "squish" option to make best use of 
 plotTracks(annoT, groupingAnnotation="group",stacking="squish")
 ```
 
-![plot of chunk unnamed-chunk-45](VizGenomicsData-figure/unnamed-chunk-45-1.png)
+![plot of chunk unnamed-chunk-46](VizGenomicsData-figure/unnamed-chunk-46-1.png)
 
 
 Adding annotation to plots. Controlling the display density (part 3)
@@ -842,7 +842,7 @@ By setting the **stacking** parameter to "dense", all overlapping features have 
 plotTracks(annoT, groupingAnnotation="group",stacking="dense")
 ```
 
-![plot of chunk unnamed-chunk-46](VizGenomicsData-figure/unnamed-chunk-46-1.png)
+![plot of chunk unnamed-chunk-47](VizGenomicsData-figure/unnamed-chunk-47-1.png)
 
 
 
@@ -900,7 +900,7 @@ plotTracks(annoT, featureAnnotation = "feature",
            Good="Blue",Bad="Red")
 ```
 
-![plot of chunk unnamed-chunk-49](VizGenomicsData-figure/unnamed-chunk-49-1.png)
+![plot of chunk unnamed-chunk-50](VizGenomicsData-figure/unnamed-chunk-50-1.png)
 
 
 GeneRegionTrack
@@ -978,12 +978,12 @@ grtrack <- GeneRegionTrack(geneModels, genome = "hg19",
 plotTracks(grtrack)
 ```
 
-![plot of chunk unnamed-chunk-52](VizGenomicsData-figure/unnamed-chunk-52-1.png)
+![plot of chunk unnamed-chunk-53](VizGenomicsData-figure/unnamed-chunk-53-1.png)
 
 GeneRegionTrack - Setting up the gene model track.
 ========================================================
 
-![plot of chunk unnamed-chunk-53](VizGenomicsData-figure/unnamed-chunk-53-1.png)
+![plot of chunk unnamed-chunk-54](VizGenomicsData-figure/unnamed-chunk-54-1.png)
 
 We can see that features here are rendered slightly differently to that of the AnnotationTrack.
 
@@ -998,28 +998,28 @@ Since gene models typically contain exons transcript and gene levels we can spec
 To label all transcripts by gene level annotation we specify the gene column to the **transcriptAnnotation** parameter.
 
 
-![plot of chunk unnamed-chunk-54](VizGenomicsData-figure/unnamed-chunk-54-1.png)
+![plot of chunk unnamed-chunk-55](VizGenomicsData-figure/unnamed-chunk-55-1.png)
 
 GeneRegionTrack - Specialised labelling.
 ========================================================
 
 Similarly we can label transcripts by transcript level.
 
-![plot of chunk unnamed-chunk-55](VizGenomicsData-figure/unnamed-chunk-55-1.png)
+![plot of chunk unnamed-chunk-56](VizGenomicsData-figure/unnamed-chunk-56-1.png)
 
 GeneRegionTrack - Specialised labelling.
 ========================================================
 
 Or we can label using the **transcriptAnnotation** object by any arbitary column where there is, at maximum, one level per transcript.
 
-![plot of chunk unnamed-chunk-56](VizGenomicsData-figure/unnamed-chunk-56-1.png)
+![plot of chunk unnamed-chunk-57](VizGenomicsData-figure/unnamed-chunk-57-1.png)
 
 GeneRegionTrack - Specialised labelling of exons.
 ========================================================
 
 As with transcripts we can label individual features using the **exonAnnotation** parameter by any arbitary column where there is one level per **exon**.
 
-![plot of chunk unnamed-chunk-57](VizGenomicsData-figure/unnamed-chunk-57-1.png)
+![plot of chunk unnamed-chunk-58](VizGenomicsData-figure/unnamed-chunk-58-1.png)
 
 GeneRegionTrack - Specialized display density for gene models.
 ========================================================
@@ -1028,7 +1028,7 @@ We saw that we can control the display density with AnnotationTrack objects.
 
 We can control the display density of GeneRegionTracks in a similar manner.
 
-![plot of chunk unnamed-chunk-58](VizGenomicsData-figure/unnamed-chunk-58-1.png)
+![plot of chunk unnamed-chunk-59](VizGenomicsData-figure/unnamed-chunk-59-1.png)
 
 GeneRegionTrack - Specialized display density for gene models.
 ========================================================
@@ -1039,7 +1039,7 @@ The **collapseTranscript** parameter allows us a finer degree of control than th
 
 Here we set **collapseTranscript** to be true inorder to merge all overlapping transcripts. 
 
-![plot of chunk unnamed-chunk-59](VizGenomicsData-figure/unnamed-chunk-59-1.png)
+![plot of chunk unnamed-chunk-60](VizGenomicsData-figure/unnamed-chunk-60-1.png)
 
 GeneRegionTrack - Specialized display density for gene models.
 ========================================================
@@ -1048,7 +1048,7 @@ Collapsing using the **collapseTranscripts** has summarised our transcripts into
 
 We have lost information on the strand however. To retain this information we need to specify a new shape for our plots using the **shape** parameter. To capture direction we use the "arrow" shape
 
-![plot of chunk unnamed-chunk-60](VizGenomicsData-figure/unnamed-chunk-60-1.png)
+![plot of chunk unnamed-chunk-61](VizGenomicsData-figure/unnamed-chunk-61-1.png)
 
 GeneRegionTrack - Specialized display density for gene models.
 ========================================================
@@ -1059,7 +1059,7 @@ These methods maintain the intron information in the gene model and so get us cl
 
 Here we may collapse transcripts to the "longest".
 
-![plot of chunk unnamed-chunk-61](VizGenomicsData-figure/unnamed-chunk-61-1.png)
+![plot of chunk unnamed-chunk-62](VizGenomicsData-figure/unnamed-chunk-62-1.png)
 
 
 GeneRegionTrack - Specialized display density for gene models.
@@ -1071,7 +1071,7 @@ The "meta" option shows us a composite, lossless illustration of the gene models
 
 Here all exon information is retained.
 
-![plot of chunk unnamed-chunk-62](VizGenomicsData-figure/unnamed-chunk-62-1.png)
+![plot of chunk unnamed-chunk-63](VizGenomicsData-figure/unnamed-chunk-63-1.png)
 
 GeneRegionTrack - Building your own gene models.
 ========================================================
@@ -1142,7 +1142,7 @@ Here the annotation is different but transcripts overlapping uc003syc are our SK
 plotTracks(customFromTxDb,from=26591341,to=27034958,transcriptAnnotation="gene")
 ```
 
-![plot of chunk unnamed-chunk-65](VizGenomicsData-figure/unnamed-chunk-65-1.png)
+![plot of chunk unnamed-chunk-66](VizGenomicsData-figure/unnamed-chunk-66-1.png)
 
 GeneRegionTrack - Building your own gene models from a TxDb.
 ========================================================
@@ -1158,7 +1158,7 @@ customFromTxDb <- GeneRegionTrack(txdbFromGFF,chromosome="chr7")
 plotTracks(customFromTxDb,from=26591341,to=27034958,transcriptAnnotation="gene")
 ```
 
-![plot of chunk unnamed-chunk-66](VizGenomicsData-figure/unnamed-chunk-66-1.png)
+![plot of chunk unnamed-chunk-67](VizGenomicsData-figure/unnamed-chunk-67-1.png)
 
 
 Overplotting, thinbox feature.
@@ -1202,7 +1202,7 @@ plotTracks(sTrack,from=134887024,to=134887074,
            chromosome = "chr7")
 ```
 
-![plot of chunk unnamed-chunk-68](VizGenomicsData-figure/unnamed-chunk-68-1.png)
+![plot of chunk unnamed-chunk-69](VizGenomicsData-figure/unnamed-chunk-69-1.png)
 
 SequenceTracks - From a DNAstringset object
 ========================================================
@@ -1219,7 +1219,7 @@ plotTracks(sTrack,from=134887024,to=134887074,
            chromosome = "chr7")
 ```
 
-![plot of chunk unnamed-chunk-69](VizGenomicsData-figure/unnamed-chunk-69-1.png)
+![plot of chunk unnamed-chunk-70](VizGenomicsData-figure/unnamed-chunk-70-1.png)
 
 SequenceTracks - From a DNAstringset object
 ========================================================
@@ -1238,7 +1238,7 @@ plotTracks(sTrack,from=1,to=50,
            chromosome = "chr7")
 ```
 
-![plot of chunk unnamed-chunk-71](VizGenomicsData-figure/unnamed-chunk-71-1.png)
+![plot of chunk unnamed-chunk-72](VizGenomicsData-figure/unnamed-chunk-72-1.png)
 
 SequenceTracks - Displaying complement sequence
 ========================================================
@@ -1275,7 +1275,7 @@ plotTracks(sTrack,from=1,to=50,
            chromosome = "chr7")
 ```
 
-![plot of chunk unnamed-chunk-75](VizGenomicsData-figure/unnamed-chunk-75-1.png)
+![plot of chunk unnamed-chunk-76](VizGenomicsData-figure/unnamed-chunk-76-1.png)
 
 ```r
 plotTracks(sTrack,from=1,to=50,
@@ -1283,7 +1283,7 @@ plotTracks(sTrack,from=1,to=50,
            cex=5)
 ```
 
-![plot of chunk unnamed-chunk-75](VizGenomicsData-figure/unnamed-chunk-75-2.png)
+![plot of chunk unnamed-chunk-76](VizGenomicsData-figure/unnamed-chunk-76-2.png)
 
 
 AlignmentsTrack. 
@@ -1327,12 +1327,12 @@ Since the BAM file may contain information from all chromosomes we need to speci
               to=135314146)
 ```
 
-![plot of chunk unnamed-chunk-77](VizGenomicsData-figure/unnamed-chunk-77-1.png)
+![plot of chunk unnamed-chunk-78](VizGenomicsData-figure/unnamed-chunk-78-1.png)
 
 AlignmentsTrack.  Plotting Aligned Reads in Gviz
 ========================================================
 
-![plot of chunk unnamed-chunk-78](VizGenomicsData-figure/unnamed-chunk-78-1.png)
+![plot of chunk unnamed-chunk-79](VizGenomicsData-figure/unnamed-chunk-79-1.png)
 
 
 By default AlignmentTracks are rendered as the both the reads themselve and the calculated coverage from these reads.
@@ -1348,21 +1348,12 @@ The valid types of plots for AlignmentsTrack objects are "pileup", "coverage" an
 
 The type "pileup" displays just the reads.
 
-![plot of chunk unnamed-chunk-79](VizGenomicsData-figure/unnamed-chunk-79-1.png)
-
-AlignmentsTrack.  Plotting Aligned Reads in Gviz
-========================================================
-
-The type "coverage" displays just the coverage (depth of signal over genomic positions) calculated from the genomic alignments.
-
 ![plot of chunk unnamed-chunk-80](VizGenomicsData-figure/unnamed-chunk-80-1.png)
 
 AlignmentsTrack.  Plotting Aligned Reads in Gviz
 ========================================================
 
-As we have seen the default display is a combination of "pileup" and "coverage".
-
-We can provide multiple *type* arguments to the **plotTracks()** function as a vector of valid types. The order in vector here does not affect the display order in panels.
+The type "coverage" displays just the coverage (depth of signal over genomic positions) calculated from the genomic alignments.
 
 ![plot of chunk unnamed-chunk-81](VizGenomicsData-figure/unnamed-chunk-81-1.png)
 
@@ -1374,6 +1365,15 @@ As we have seen the default display is a combination of "pileup" and "coverage".
 We can provide multiple *type* arguments to the **plotTracks()** function as a vector of valid types. The order in vector here does not affect the display order in panels.
 
 ![plot of chunk unnamed-chunk-82](VizGenomicsData-figure/unnamed-chunk-82-1.png)
+
+AlignmentsTrack.  Plotting Aligned Reads in Gviz
+========================================================
+
+As we have seen the default display is a combination of "pileup" and "coverage".
+
+We can provide multiple *type* arguments to the **plotTracks()** function as a vector of valid types. The order in vector here does not affect the display order in panels.
+
+![plot of chunk unnamed-chunk-83](VizGenomicsData-figure/unnamed-chunk-83-1.png)
 
 
 AlignmentsTrack.  Sashimi plots
@@ -1413,14 +1413,14 @@ As with **DataTrack** objects we can combine the AlignmentTracks as a vector for
 
 By default we will display the reads and calculated coverage. Here the paired reads and split reads are illustrated by thick and thin lines respectively
 
-![plot of chunk unnamed-chunk-84](VizGenomicsData-figure/unnamed-chunk-84-1.png)
+![plot of chunk unnamed-chunk-85](VizGenomicsData-figure/unnamed-chunk-85-1.png)
 
 AlignmentsTrack.  Sashimi plots in Gviz
 ========================================================
 
 To reproduce a plot similar to that in IGV we can simply include the "sashimi" type in the *type* parameter vector, here alongside "coverage" 
 
-![plot of chunk unnamed-chunk-85](VizGenomicsData-figure/unnamed-chunk-85-1.png)
+![plot of chunk unnamed-chunk-86](VizGenomicsData-figure/unnamed-chunk-86-1.png)
 
 AlignmentsTrack.  Highlighting genomic alignment information.
 ========================================================
@@ -1430,7 +1430,7 @@ The **AlignmentTrack** object allows for specific parameters controlling how rea
 Two useful functions are col.gaps and col.mates or lty.gap and lty.mates which will allow us to better disntiguish between gapped alignments (split reads) and gaps between read pairs respectively.
 
 
-![plot of chunk unnamed-chunk-86](VizGenomicsData-figure/unnamed-chunk-86-1.png)
+![plot of chunk unnamed-chunk-87](VizGenomicsData-figure/unnamed-chunk-87-1.png)
 
 AlignmentsTrack.  Highlighting genomic alignment information.
 ========================================================
@@ -1440,7 +1440,7 @@ Similarly using lty.gap and lty.mate parameters.
 Line width may also be controlled with lwd.gap and lwd.mate parameters continuing the similarities to Base R plotting.
 
 
-![plot of chunk unnamed-chunk-87](VizGenomicsData-figure/unnamed-chunk-87-1.png)
+![plot of chunk unnamed-chunk-88](VizGenomicsData-figure/unnamed-chunk-88-1.png)
 
 AlignmentsTrack.  Highlighting mismathces to reference.
 ========================================================
@@ -1458,13 +1458,13 @@ AlignmentsTrack.  Highlighting mismatches to reference.
 
 Now when we replot the pileup of reads mismatches in the reads are highlighted.
 
-![plot of chunk unnamed-chunk-89](VizGenomicsData-figure/unnamed-chunk-89-1.png)
+![plot of chunk unnamed-chunk-90](VizGenomicsData-figure/unnamed-chunk-90-1.png)
 AlignmentsTrack.  Highlighting mismatches to reference.
 ========================================================
 
 We could also specify the SequenceTrack just in the **plotTracks()** function as shown for the liver reads here. Here we simply include the relevant **SequenceTrack** object as a track to be plotted  alongside the BAM and Gviz connects the dots.
 
-![plot of chunk unnamed-chunk-90](VizGenomicsData-figure/unnamed-chunk-90-1.png)
+![plot of chunk unnamed-chunk-91](VizGenomicsData-figure/unnamed-chunk-91-1.png)
 
 Data from GAlignments.
 
@@ -1517,7 +1517,7 @@ We can then plot the BiomartGeneRegionTrack as we have previous GeneRegionTracks
 plotTracks(bgrTrack)
 ```
 
-![plot of chunk unnamed-chunk-92](VizGenomicsData-figure/unnamed-chunk-92-1.png)
+![plot of chunk unnamed-chunk-93](VizGenomicsData-figure/unnamed-chunk-93-1.png)
 
 Bringing in External data. Gene models through Biomart
 ========================================================
@@ -2182,7 +2182,7 @@ Once we have retrieved our filtered gene models we can plot them as before.
 plotTracks(bgrTrack)
 ```
 
-![plot of chunk unnamed-chunk-95](VizGenomicsData-figure/unnamed-chunk-95-1.png)
+![plot of chunk unnamed-chunk-96](VizGenomicsData-figure/unnamed-chunk-96-1.png)
 
 Bringing in External data. Gene models through Biomart
 ========================================================
@@ -2194,7 +2194,7 @@ Once we have retrieved our filtered gene models we can plot them as before.
 plotTracks(bgrTrack)
 ```
 
-![plot of chunk unnamed-chunk-96](VizGenomicsData-figure/unnamed-chunk-96-1.png)
+![plot of chunk unnamed-chunk-97](VizGenomicsData-figure/unnamed-chunk-97-1.png)
 
 Bringing in External data. Tracks from UCSC
 ========================================================
