@@ -1,0 +1,98 @@
+---
+title: "ExternalData"
+author: "MRC CSC Bioinformatics Team"
+date: "14 August 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+* Retrieve and plot Ensembl genes for mm10 from Biomart for Bdnf1 (*Ensembl uses 16 instead of chr16 here*).
+
+
+```{r,warning=F}
+options(ucscChromosomeNames=FALSE)
+
+suppressPackageStartupMessages(library(GenomicRanges))
+suppressPackageStartupMessages(library(Gviz))
+suppressPackageStartupMessages(library(TxDb.Mmusculus.UCSC.mm9.knownGene))
+
+
+library(GenomicRanges)
+library(Gviz)
+library(TxDb.Mmusculus.UCSC.mm9.knownGene)
+
+
+bgrTrack <- BiomartGeneRegionTrack(genome="mm10",
+                                   start=109672700,
+                                   end=109729043,
+                                   chromosome = "2",
+                                   name="ENSEMBL")
+
+plotTracks(bgrTrack,chromosome="2",
+           from=109672700,to=109729043)
+
+```
+
+
+* Create a plot of the Ensembl annotations for Bdnf1 and plot alongside the splicing information for Bdnf1. (*We will need to fix seqlevels() and seqnames() for our BiomartGeneRegionTrack ranges*)
+
+```{r,warning=F}
+options(ucscChromosomeNames=FALSE)
+
+suppressPackageStartupMessages(library(rtracklayer))
+
+  library(rtracklayer)
+
+  seqlevels(bgrTrack@range) <- "chr2"
+  seqnames(bgrTrack@range) <- "chr2"
+
+  kidneyReadsAT <- AlignmentsTrack("../Data/Kidney.bam")
+  brainReadsAT <- AlignmentsTrack("../Data/Brain.bam")
+  plotTracks(c(kidneyReadsAT,
+               brainReadsAT,
+               bgrTrack),
+             chromosome = "chr2",
+             from = 109672700, 
+             to=109729043,
+             transcriptAnnotation="Name",
+             type=c("sashimi","coverage"))
+
+```
+
+* Add in some information on know SNPs using the UCSC snp137Mult table.
+
+```{r,warning=F,eval=F}
+
+snpTrack <- UcscTrack(genome = "mm10", chromosome = "chr2",track = "snp137Mult",
+from = 109672700, to = 109729043, trackType = "AnnotationTrack",
+start = "chromStart", end = "chromEnd", id = "name",
+feature = "func", strand = "strand", shape = "box",
+stacking = "dense", fill = "black", name = "SNPs")
+
+save(snpTrack,file="../RData/snps.RData")
+```
+
+```{r,warning=F,eval=T}
+load(file="../RData/snps.RData")
+```
+
+
+```{r,warning=F}
+options(ucscChromosomeNames=FALSE)
+
+  plotTracks(c(snpTrack,
+               kidneyReadsAT,
+               brainReadsAT,
+               bgrTrack),
+             chromosome = "chr2",
+             from = 109672700, 
+             to=109729043,
+             transcriptAnnotation="Name",
+             type=c("sashimi","coverage"),
+             size=c(0.2,1,1,1))
+
+```

@@ -155,21 +155,22 @@ library(Rsamtools)
 afrom <- 98986825
 ato <- 98997877
 
-indexBam("~/Desktop/VisualisingGenomicsData/Data/heart.bodyMap.bam")
-indexBam("~/Desktop/VisualisingGenomicsData/Data/liver.bodyMap.bam")
-
-alTrack <- AlignmentsTrack("~/Desktop/VisualisingGenomicsData/Data/heart.bodyMap.bam",
+alTrack <- AlignmentsTrack("Data/heart.bodyMap.bam",
                            isPaired = TRUE)
-alTrack2 <- AlignmentsTrack("~/Desktop/VisualisingGenomicsData/Data/liver.bodyMap.bam", 
+alTrack2 <- AlignmentsTrack("Data/liver.bodyMap.bam", 
                            isPaired = TRUE)
 
 bmt <- BiomartGeneRegionTrack(genome = "hg19", chromosome = "chr12",
                               start = afrom, end = ato,
-                              filter = list(with_ox_refseq_mrna = TRUE),
-                              stacking = "dense")
+                              filter = list(with_ox_refseq_mrna = TRUE), stacking = "dense")
 
-plotTracks(c(bmt, alTrack,alTrack2), from = afrom,to = ato,
+plotTracks(c(alTrack,alTrack2), from = afrom,to = ato,
            chromosome = "chr12", type = c("coverage","sashimi"))
+
+plotTracks(c(alTrack,alTrack2), from = afrom,to = ato,
+           chromosome = "chr12")
+plotTracks(c(liverReads,heartReads), from = afrom,to = ato,
+           chromosome = "chr12")
 
 ```
 
@@ -188,7 +189,7 @@ plotTracks(c(customMT, alTrack,alTrack2), from = afrom,to = ato,
 ```{r, echo=TRUE}
 library(GenomicFeatures)
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
-txdbFromGFF <- makeTxDbFromGFF(file = "Data/tophat2.gff")
+txdbFromGFF <- makeTxDbFromGFF(file = "~/Downloads/tophat2.gff")
 customMT <- GeneRegionTrack(txdbFromGFF)
 
 
@@ -199,8 +200,8 @@ plotTracks(c(customMT, alTrack,alTrack2), from = afrom,to = ato,
 ```
 
 ```{r, echo=TRUE}
-afrom <- 134887024
-ato <- 134888917
+ato <- 135430528
+afrom <- 134888917
 
 from <- afrom
 to <- ato
@@ -340,3 +341,50 @@ UCSC tracks
 <!-- data(geneModels) -->
 <!-- grtrack <- GeneRegionTrack(geneModels, genome = gen,chromosome = chr, name = "Gene Model") -->
 <!-- plotTracks(list(grtrack)) -->
+from <- 65921878
+to <- 65980988
+conservation <- UcscTrack(genome = "mm9", chromosome = "chrX",
+track = "Conservation", table = "phyloP30wayPlacental",
+from = from, to = to, trackType = "DataTrack",
+start = "start", end = "end", data = "score",
+type = "hist", window = "auto", col.histogram = "darkblue",
+fill.histogram = "darkblue", ylim = c(-3.7, 4),
+name = "Conservation")
+
+from <- 65921878
+to <- 65980988
+conservation <- UcscTrack(genome = "hg19", chromosome = "chrX",
+track = "Conservation", table = "phyloP100wayAll",
+from = from, to = to, trackType = "DataTrack",
+start = "start", end = "end", data = "score",
+type = "hist", window = "auto", col.histogram = "darkblue",
+fill.histogram = "darkblue", ylim = c(-3.7, 4),
+name = "Conservation")
+
+
+from <- 65921878
+to <- 65980988
+conservation <- UcscTrack(genome = "hg19", chromosome = "chrX",
+track = "Conservation", table = "phyloP100wayAll",
+from = from, to = to, trackType = "DataTrack",
+start = "start", end = "end", data = "score",
+type = "hist", window = "auto", col.histogram = "darkblue",
+fill.histogram = "darkblue", ylim = c(-3.7, 4),
+name = "Conservation")
+
+chr5:
+chr5:
+from <- 135313003
+to <- 135313570
+<!-- from <- 134887456 -->
+<!-- to <- 134888021 -->
+
+conservationTrack <- UcscTrack(genome = "hg19", chromosome = "chr5",
+track = "Conservation", table = "phyloP100wayAll",
+from = from, to = to, trackType = "DataTrack",
+start = "start", end = "end", data = "score",
+type = "hist", window = "auto", col.histogram = "darkblue",
+fill.histogram = "darkblue", ylim = c(-3.7, 4),
+name = "Conservation")
+
+save(conservationTrack,file="Data/conservation.RData")

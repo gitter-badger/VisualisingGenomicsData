@@ -1,0 +1,137 @@
+---
+title: "AlignmentTrack"
+author: "MRC CSC Bioinformatics Team"
+date: "14 August 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+```
+
+
+* With TxDB object for mm9 recreate a plot of transcripts Igll1 and Vpreb1 and Topb3b.
+
+
+```{r,warning=F}
+
+suppressPackageStartupMessages(library(GenomicRanges))
+suppressPackageStartupMessages(library(Gviz))
+suppressPackageStartupMessages(library(TxDb.Mmusculus.UCSC.mm9.knownGene))
+
+
+library(GenomicRanges)
+library(Gviz)
+library(TxDb.Mmusculus.UCSC.mm9.knownGene)
+
+gtTrack <- GeneRegionTrack(TxDb.Mmusculus.UCSC.mm9.knownGene,
+                chromosome="chr16",
+                start=16858904,
+                end=16895526)
+plotTracks(gtTrack,transcriptAnnotation="name")
+
+
+
+```
+
+
+* Plot the signal over this region from the myc_mel.bam and myc_ch12.bam alongside any peaks (*there may be none?*) and the gene models. 
+
+
+```{r,warning=F}
+suppressPackageStartupMessages(library(rtracklayer))
+
+library(rtracklayer)
+
+  mycmelReadsAT <- AlignmentsTrack("../Data/myc_mel_Igll1Region.bam")
+  mycch12ReadsAT <- AlignmentsTrack("../Data/myc_ch12_Igll1Region.bam")
+
+
+  myc_melPeaks <- import.bed("../Data/myc_mel.bed")
+  mycmelpeaksDT <- DataTrack(myc_melPeaks,chromosome="chr16",
+                   from=16858904,
+                   to=16895526,
+                   name="Mel_peaks",
+                   type="b")
+  myc_ch12Peaks <- import.bed("../Data/myc_ch12.bed")
+  mycch12peaksDT <- DataTrack(myc_ch12Peaks,chromosome="chr16",
+                   from=16858904,
+                   to=16895526,
+                   name="ch12_peaks",
+                   type="b")
+
+   
+   plotTracks(c(mycmelReadsAT,mycch12ReadsAT,
+                mycmelpeaksDT,mycch12peaksDT,
+                gtTrack),
+              chromosome="16",
+              from=16858904,
+              to=16895526,
+              type=c("coverage","b"))
+
+
+```
+
+
+With TxDB object for **mm10** recreate a plot of transcript Bdnf1. (*Remembering major revisions of genome may change coordinates of genes*)
+
+
+```{r,warning=F}
+
+suppressPackageStartupMessages(library(TxDb.Mmusculus.UCSC.mm10.knownGene))
+
+
+library(TxDb.Mmusculus.UCSC.mm10.knownGene)
+gtTrack <- GeneRegionTrack(TxDb.Mmusculus.UCSC.mm10.knownGene,
+                chromosome="chr2",
+                start=109672700,
+                end=109729043)
+plotTracks(gtTrack,transcriptAnnotation="Name")
+
+
+
+```
+
+
+* Create a plot just showing the pileup of reads from the Kidney tissue over these genes. (*Listen to the warnings from R if you have problems loading Alignments!*)
+
+```{r,warning=F}
+
+  options(ucscChromosomeNames=FALSE)
+
+  kidneyReadsAT <- AlignmentsTrack("../Data/Kidney.bam")
+  plotTracks(c(kidneyReadsAT,
+               gtTrack),
+             chromosome="chr2",
+             start=109672700,
+             end=109729043,
+             transcriptAnnotation="Name",
+             type="pileup")
+
+
+
+```
+
+
+* Create a plot showing the coverage and splicing information over these genes for the Kidney and Brain tissue.
+
+```{r,warning=F}
+
+  options(ucscChromosomeNames=FALSE)
+
+  brainReadsAT <- AlignmentsTrack("../Data/Brain.bam")
+  plotTracks(c(kidneyReadsAT,
+               brainReadsAT,
+               gtTrack),
+             chromosome="chr2",
+             start=109672700,
+             end=109729043,
+             transcriptAnnotation="Name",
+             type=c("sashimi","coverage"))
+
+
+
+```
+
+
+
