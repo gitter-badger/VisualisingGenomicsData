@@ -858,7 +858,7 @@ plotTracks(grtrack)
 GeneRegionTrack - Setting up the gene model track.
 ========================================================
 
-```{r, echo=F,fig.width=23,fig.height=5}
+```{r, echo=T,fig.width=23,fig.height=5}
 plotTracks(grtrack)
 ```
 
@@ -875,7 +875,7 @@ Since gene models typically contain exon, transcript and gene level annotation w
 To label all transcripts by the gene annotation we specify the gene column to the **transcriptAnnotation** parameter.
 
 
-```{r, echo=F,fig.width=23,fig.height=5}
+```{r, echo=T,fig.width=23,fig.height=5}
 plotTracks(grtrack,transcriptAnnotation="gene")
 ```
 
@@ -884,7 +884,7 @@ GeneRegionTrack - Specialised labelling.
 
 Similarly we can label transcripts by thier individual transcript names.
 
-```{r, echo=F,fig.width=20,fig.height=8}
+```{r, echo=T,fig.width=20,fig.height=8}
 plotTracks(grtrack,transcriptAnnotation="transcript")
 ```
 
@@ -893,7 +893,7 @@ GeneRegionTrack - Specialised labelling.
 
 Or we can label using the **transcriptAnnotation** object by any arbitary column where there is, at maximum, one level per transcript.
 
-```{r, echo=F,fig.width=15,fig.height=5}
+```{r, echo=T,fig.width=15,fig.height=5}
 plotTracks(grtrack,transcriptAnnotation="symbol")
 ```
 
@@ -902,7 +902,7 @@ GeneRegionTrack - Specialised labelling of exons.
 
 As with transcripts we can label individual features using the **exonAnnotation** parameter by any arbitary column where there is one level per feature/exon.
 
-```{r, echo=F,fig.width=20,fig.height=8}
+```{r, echo=T,fig.width=20,fig.height=8}
 plotTracks(grtrack,exonAnnotation="exon",from=26677490,to=26686889,cex=0.5)
 ```
 
@@ -913,7 +913,7 @@ We saw that we can control the display density when plotting **AnnotationTrack**
 
 We can control the display density of GeneRegionTracks in the same manner.
 
-```{r, echo=F,fig.width=20,fig.height=8}
+```{r, echo=T,fig.width=20,fig.height=8}
 plotTracks(grtrack, stacking="dense")
 ```
 
@@ -926,7 +926,7 @@ The **collapseTranscript** parameter allows us a finer degree of control than th
 
 Here we set **collapseTranscript** to be true inorder to merge all overlapping transcripts. 
 
-```{r, echo=F,fig.width=15,fig.height=5}
+```{r, echo=T,fig.width=15,fig.height=5}
 plotTracks(grtrack, collapseTranscripts=T,
            transcriptAnnotation = "symbol")
 ```
@@ -938,7 +938,7 @@ Collapsing using the **collapseTranscripts** has summarised our transcripts into
 
 We have however lost information on the strand of transcripts. To retain this information we need to specify a new shape for our plots using the **shape** parameter. To capture direction we use the "arrow" shape
 
-```{r, echo=F,fig.width=15,fig.height=5}
+```{r, echo=T,fig.width=15,fig.height=5}
 plotTracks(grtrack, collapseTranscripts=T,
            transcriptAnnotation = "symbol",
            shape="arrow")
@@ -953,7 +953,7 @@ These methods maintain the intron information in the gene model and so get us cl
 
 Here we may collapse transcripts to the "longest".
 
-```{r, echo=F,fig.width=15,fig.height=5}
+```{r, echo=T,fig.width=15,fig.height=5}
 plotTracks(grtrack, collapseTranscripts="longest",
            transcriptAnnotation = "symbol")
 ```
@@ -968,7 +968,7 @@ The "meta" option shows us a composite, lossless illustration of the gene models
 
 Here importantly all exon information is retained.
 
-```{r, echo=F,fig.width=15,fig.height=5}
+```{r, echo=T,fig.width=15,fig.height=5}
 plotTracks(grtrack, collapseTranscripts="meta",
            transcriptAnnotation = "symbol")
 ```
@@ -992,7 +992,7 @@ txdb
 GeneRegionTrack - Building your own gene models from a TxDb.
 ========================================================
 
-Now we have loaded our TxDb object and assigned it to *txdb*. We can use this TxDb object to construct our GeneRegionTrack. Here we focus on chromosome 7 again.
+Now we have loaded our **TxDb** object and assigned it to *txdb*. We can use this **TxDb** object to construct our **GeneRegionTrack**. Here we focus on chromosome 7 again.
 
 ```{r, echo=TRUE}
 
@@ -1003,31 +1003,31 @@ head(customFromTxDb)
 GeneRegionTrack - Building your own gene models from a TxDb.
 ========================================================
 
-With our new GeneRegionTrack we can now reproduce the gene models using the Bioconductor TxDb annotation.
+With our new **GeneRegionTrack** we can now reproduce the gene models using the Bioconductor TxDb annotation.
 
 Here the annotation is different but transcripts overlapping uc003syc are our SKAP2 gene.
 
-```{r, echo=TRUE}
+```{r,echo=T,fig.width=15,fig.height=5}
 
-plotTracks(customFromTxDb,from=26591341,to=27034958,transcriptAnnotation="gene")
+plotTracks(customFromTxDb,
+           from=26591341,to=27034958,
+           transcriptAnnotation="gene")
 ```
 
-GeneRegionTrack - Building your own gene models from a TxDb.
+GeneRegionTrack - Building your own gene models from a GFF.
 ========================================================
 
-Now by combining the ability to create our own TxDb objects from GFFs we can create a very custom GeneRegionTrack from a GFF file.
+Now by combining the ability to create our own **TxDb** objects from GFFs we can create a very custom GeneRegionTrack from a GFF file.
 
 
-```{r, echo=TRUE}
+```{r, echo=TRUE,fig.width=15,fig.height=5}
 library(GenomicFeatures)
 txdbFromGFF <- makeTxDbFromGFF(file = "~/Downloads/tophat2.gff")
 customFromTxDb <- GeneRegionTrack(txdbFromGFF,chromosome="chr7")
-plotTracks(customFromTxDb,from=26591341,to=27034958,transcriptAnnotation="gene")
+plotTracks(customFromTxDb,
+           from=26591341,to=27034958,
+           transcriptAnnotation="gene")
 ```
-
-
-Overplotting, thinbox feature.
-========================================================
 
 Exercises.
 ========================================================
@@ -1035,11 +1035,11 @@ Exercises.
 SequenceTracks
 ========================================================
 
-When displaying genomics data it can be important to illustrate the underlying sequence for the genome be viewed.
+When displaying genomics data it can be important to illustrate the underlying sequence for the genome being viewed.
 
 Gviz uses **SequenceTrack** objects to handle displaying sequencing information.
 
-First we need to get some  sequence information for our genome of interest to display. Here we will use one of the BSgenome packages specific for hg19 - **BSgenome.Hsapiens.UCSC.hg19**. This contains the full sequence for hg19 as found in UCSC
+First we need to get some  sequence information for our genome of interest to display. Here we will use one of the **BSgenome** packages specific for hg19 - **BSgenome.Hsapiens.UCSC.hg19**. This contains the full sequence for hg19 as found in UCSC
 
 ```{r, echo=TRUE}
 library(BSgenome.Hsapiens.UCSC.hg19)
@@ -1049,12 +1049,12 @@ BSgenome.Hsapiens.UCSC.hg19[["chr7"]]
 SequenceTracks - From a BSgenome object
 ========================================================
 
-We can create a **SequenceTrack** object straight from this BSgenome object using the **SequenceTrack()** constructor. 
+We can create a **SequenceTrack** object straight from this **BSgenome** object using the **SequenceTrack()** constructor. 
 
-We can then plot this **SequenceTrack** as with all track using the **plotTracks()** functions. Here we specify a *from*, *to* and *chromosome* to select a region to display.
+We can then plot this **SequenceTrack**, as with all tracks, using the **plotTracks()** functions. Here we specify the *from*, *to* and *chromosome* parameters to select a region to display.
 
 
-```{r, echo=TRUE}
+```{r, echo=TRUE,fig.width=20,fig.height=3}
 sTrack <- SequenceTrack(Hsapiens)
 plotTracks(sTrack,from=134887024,to=134887074,
            chromosome = "chr7")
@@ -1063,10 +1063,9 @@ plotTracks(sTrack,from=134887024,to=134887074,
 SequenceTracks - From a DNAstringset object
 ========================================================
 
-I can also specify the DNAstringset object we have encountered in the Bioconductor and ChIP-seq courses.
+We can also specify a DNAstringset object which we have encountered in the Bioconductor and ChIP-seq courses.
 
-
-```{r, echo=TRUE}
+```{r, echo=F,fig.width=20,fig.height=3}
 dsSet <- DNAStringSet(Hsapiens[["chr7"]])
 names(dsSet) <- "chr7"
 sTrack <- SequenceTrack(dsSet)
@@ -1074,12 +1073,13 @@ plotTracks(sTrack,from=134887024,to=134887074,
            chromosome = "chr7")
 ```
 
+
 SequenceTracks - From a DNAstringset object
 ========================================================
 
 Or even from a fasta file.
 
-Here we use an example containing only the sequence around the region we are looking at to save space. Since the sequence is only of the region of interest we need specify the sequence limits for the *from* and *to* arguments.
+Here we use an example containing only the sequence around the region we are looking at to save space. Since the sequence is only of the region of interest we need specify the sequence limits for the *from* and *to* arguments. With completer fasta files, **from** and **to** would be set as for other **SequenceTrack** examples.
 
 ```{r, echo=F,eval=F}
 dsSet <- DNAStringSet(Hsapiens[["chr7"]])
@@ -1092,7 +1092,7 @@ plotTracks(sTrack,from=1,to=50,
 ```
 
 
-```{r, echo=T,eval=T}
+```{r, echo=T,eval=T,fig.width=20,fig.height=3}
 sTrack <- SequenceTrack("Data/chr7Short.fa")
 plotTracks(sTrack,from=1,to=50,
            chromosome = "chr7")
@@ -1101,9 +1101,9 @@ plotTracks(sTrack,from=1,to=50,
 SequenceTracks - Displaying complement sequence
 ========================================================
 
-As with IGV, the sequence can be displayed as its complement. This is performed in Gviz by setting the **complement** argument to the **plotTracks()** function 
+As with IGV, the sequence can be displayed as its complement. This is performed in Gviz by setting the **complement** argument to the **plotTracks()** function to TRUE/T.
 
-```{r, echo=F,eval=F}
+```{r, echo=F,eval=F,fig.width=20,fig.height=3}
 sTrack <- SequenceTrack("Data/chr7Short.fa")
 plotTracks(sTrack,from=1,to=50,
            chromosome = "chr7",complement=T)
@@ -1112,9 +1112,9 @@ plotTracks(sTrack,from=1,to=50,
 SequenceTracks - Displaying strand information
 ========================================================
 
-We can also add 5' to 3' direction as we have with **GenomeAxisTrack** track objects using the **add53** parameter. This allows for a method to illustrate the strand of the sequence being diplayed.
+We can also add 5' to 3' direction as we have for plotting **GenomeAxisTrack**  objects using the **add53** parameter. This allows for a method to illustrate the strand of the sequence being diplayed.
 
-```{r, echo=F,eval=F}
+```{r, echo=F,eval=F,fig.width=20,fig.height=3}
 sTrack <- SequenceTrack("Data/chr7Short.fa")
 plotTracks(sTrack,from=1,to=50,
            chromosome = "chr7",complement=F,
@@ -1126,7 +1126,7 @@ SequenceTracks - Displaying strand information
 
 Notice the 5' and 3' labels have swapped automatically when we have specified the complement sequence.
 
-```{r, echo=F,eval=F}
+```{r, echo=F,eval=F,fig.width=20,fig.height=3}
 sTrack <- SequenceTrack("Data/chr7Short.fa")
 plotTracks(sTrack,from=1,to=50,
            chromosome = "chr7",complement=T,
@@ -1138,10 +1138,10 @@ SequenceTracks - Controlling base display size
 
 We can control the size of bases with the **cex** parameter, as with the standard R plotting. 
 
-An interesting feature of this is that when bases may overlaps when plotted, Gviz will provide a colour representation of bases opposed to base characters themselves.
+An interesting feature of this is that when plotted bases overlap, Gviz will provide a colour representation of bases instead of the bases' characters.
 
 
-```{r, echo=T,collapse=T,fig.width=20,fig.height=5}
+```{r, echo=T,collapse=T,fig.width=20,fig.height=3}
 plotTracks(sTrack,from=1,to=50,
            chromosome = "chr7")
 plotTracks(sTrack,from=1,to=50,
