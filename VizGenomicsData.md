@@ -910,9 +910,9 @@ We have seen how we can display complex annotation using the **AnnotationTrack**
 
 For gene models Gviz contains a more specialised object, the **GeneRegionTrack** object.
 
-The **GeneRegionTrack** object contains additional parameters and display options most fitted for the display of gene models.
+The **GeneRegionTrack** object contains additional parameters and display options specific for the display of gene models.
 
-Lets start by looking at some of the small set of gene models stored in the Gviz package.
+Lets start by looking at the small gene model set stored in the Gviz package.
 
 
 
@@ -961,13 +961,13 @@ GeneRegionTrack
 
 We can see that this data.frame contains information on start, end , chromosome and strand of feature needed to position features in a linear genome.
 
-Also included are a featuretype column names "feature" and columns containing additional metadata to group by - "gene","exon","transcript","symbol".
+Also included are a feature type column named "feature" and columns containing additional metadata to group by - "gene","exon","transcript","symbol".
 
 
 GeneRegionTrack - Setting up the gene model track.
 ========================================================
 
-We can define a GeneRegionTrack as we would all other tracktypes, here providing a genome name, chromosome of interest and a name for the track.
+We can define a GeneRegionTrack as we would all other tracktypes. Here we provide a genome name, chromosome of interest and a name for the track.
 
 
 
@@ -985,17 +985,17 @@ GeneRegionTrack - Setting up the gene model track.
 
 ![plot of chunk unnamed-chunk-54](VizGenomicsData-figure/unnamed-chunk-54-1.png)
 
-We can see that features here are rendered slightly differently to that of the AnnotationTrack.
+We can see that features here are rendered slightly differently to those in an **AnnotationTrack** object.
 
-Here direction is illustrated by arrows in Introns and unstranslated regions shown as narrower boxes.
+Here direction is illustrated by arrows in introns and unstranslated regions are shown as narrower boxes.
 
 
 GeneRegionTrack - Specialised labelling.
 ========================================================
 
-Since gene models typically contain exons transcript and gene levels we can specify we wish to annotate our plots by these levels using the **transcriptAnnotation** and **exonAnnotation** parameters.
+Since gene models typically contain exon, transcript and gene level annotation we can specify how we wish to annotate our plots by using the **transcriptAnnotation** and **exonAnnotation** parameters.
 
-To label all transcripts by gene level annotation we specify the gene column to the **transcriptAnnotation** parameter.
+To label all transcripts by the gene annotation we specify the gene column to the **transcriptAnnotation** parameter.
 
 
 ![plot of chunk unnamed-chunk-55](VizGenomicsData-figure/unnamed-chunk-55-1.png)
@@ -1003,7 +1003,7 @@ To label all transcripts by gene level annotation we specify the gene column to 
 GeneRegionTrack - Specialised labelling.
 ========================================================
 
-Similarly we can label transcripts by transcript level.
+Similarly we can label transcripts by thier individual transcript names.
 
 ![plot of chunk unnamed-chunk-56](VizGenomicsData-figure/unnamed-chunk-56-1.png)
 
@@ -1017,23 +1017,23 @@ Or we can label using the **transcriptAnnotation** object by any arbitary column
 GeneRegionTrack - Specialised labelling of exons.
 ========================================================
 
-As with transcripts we can label individual features using the **exonAnnotation** parameter by any arbitary column where there is one level per **exon**.
+As with transcripts we can label individual features using the **exonAnnotation** parameter by any arbitary column where there is one level per feature/exon.
 
 ![plot of chunk unnamed-chunk-58](VizGenomicsData-figure/unnamed-chunk-58-1.png)
 
 GeneRegionTrack - Specialized display density for gene models.
 ========================================================
 
-We saw that we can control the display density with AnnotationTrack objects.
+We saw that we can control the display density when plotting **AnnotationTrack** objects.
 
-We can control the display density of GeneRegionTracks in a similar manner.
+We can control the display density of GeneRegionTracks in the same manner.
 
 ![plot of chunk unnamed-chunk-59](VizGenomicsData-figure/unnamed-chunk-59-1.png)
 
 GeneRegionTrack - Specialized display density for gene models.
 ========================================================
 
-However, since GeneRegionTrack is a special class of the Annotation object we have special parameter for dealing with display density of transcripts.
+However, since the **GeneRegionTrack** object is a special class of the **AnnotationTrack** object we have special parameter for dealing with display density of transcripts.
 
 The **collapseTranscript** parameter allows us a finer degree of control than that seen with **stacking** parameter.
 
@@ -1046,7 +1046,7 @@ GeneRegionTrack - Specialized display density for gene models.
 
 Collapsing using the **collapseTranscripts** has summarised our transcripts into their respective gene boundaries.
 
-We have lost information on the strand however. To retain this information we need to specify a new shape for our plots using the **shape** parameter. To capture direction we use the "arrow" shape
+We have however lost information on the strand of transcripts. To retain this information we need to specify a new shape for our plots using the **shape** parameter. To capture direction we use the "arrow" shape
 
 ![plot of chunk unnamed-chunk-61](VizGenomicsData-figure/unnamed-chunk-61-1.png)
 
@@ -1067,20 +1067,20 @@ GeneRegionTrack - Specialized display density for gene models.
 
 Or we may specify to **collapseTranscripts** function to collapse by "meta".
 
-The "meta" option shows us a composite, lossless illustration of the gene models closer to that seen in "collapsed" IGV tracks.
+The "meta" option shows us a composite, lossless illustration of the gene models closest to that seen in "collapsed" IGV tracks.
 
-Here all exon information is retained.
+Here importantly all exon information is retained.
 
 ![plot of chunk unnamed-chunk-63](VizGenomicsData-figure/unnamed-chunk-63-1.png)
 
 GeneRegionTrack - Building your own gene models.
 ========================================================
 
-We have seen how gene models are organised in Bioconductor using the TxDB objects.
+We have seen in previous material how gene models are organised in Bioconductor using the **TxDB** objects.
 
-Gviz may be used in junction with TxDB objects to construct the GeneRegionTracks. 
+Gviz may be used in junction with **TxDB** objects to construct the **GeneRegionTrack** objects. 
 
-We saw in the Bioconductor and ChIPseq course that many genomes have pre-build gene annotation within the respective TxDB libraries. Here we will load a TxDb for hg19 from the  **TxDb.Hsapiens.UCSC.hg19.knownGene** library.
+We saw in the Bioconductor and ChIPseq course that many genomes have pre-build gene annotation within the respective TxDB libraries. Here we will load a **TxDb** for hg19 from the  **TxDb.Hsapiens.UCSC.hg19.knownGene** library.
 
 ```r
 library(TxDb.Hsapiens.UCSC.hg19.knownGene)
