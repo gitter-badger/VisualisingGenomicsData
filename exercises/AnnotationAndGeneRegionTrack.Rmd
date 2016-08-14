@@ -1,0 +1,18 @@
+---
+title: "AnnotationAndGeneRegionTracks"
+author: "MRC CSC Bioinformatics Team"
+date: "14 August 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Using an AnnotationTrack create the below plot.
+
+Flatten the previous plot.
+
+Load in the TxDB object for mm9 and create a plot of transcripts Igll1 and Vpreb1 and Topb3b.
+
+Recreate the plot with just the meta gene representation of transcripts shown.

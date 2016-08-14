@@ -1,0 +1,27 @@
+---
+title: "AlignmentTrack"
+author: "MRC CSC Bioinformatics Team"
+date: "14 August 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+chr16:16,838,144-16,913,034
+
+With TxDB object for mm9 recreate a plot of transcripts Igll1 and Vpreb1 and Topb3b.
+
+Plot the signal over this region from the myc_mel.bam and myc_ch12.bam alongside any peaks.
+
+With TxDB object for **mm10** recreate a plot of transcripts Igll1 and Vpreb1 and Topb3b.
+
+Create a plot just showing the pileup of reads from the Kidney tissue over these genes.
+
+Create a plot showing the coverage and splicing information over these genes for the Kidney and Brain tissue.
+
+chr2:109,672,700-109,729,043
+
+
+

@@ -1,0 +1,16 @@
+---
+title: "ExternalData"
+author: "MRC CSC Bioinformatics Team"
+date: "14 August 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+Retrieve and plot Ensembl genes for mm10 from Biomart.
+Retrieve the plot knowngene table from UCSC for mm10
+Create a plot of the metagenes for both annotations and plot alongside the splicing information for Bdnf1
+Add in some information on know SNPs using the UCSC snp137Mult table.

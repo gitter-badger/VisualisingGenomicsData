@@ -1,0 +1,27 @@
+---
+title: "Axis and DataTrack objects"
+author: "MRC CSC Bioinformatics Team"
+date: "14 August 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+DiffPeak - chr2:135,522,235-135,531,066
+
+Create a plot of an axis from 100kb to 1000kb
+Create a plot of an axis along side this showing a relative scale of 450kb
+Replot to Indicate the 5 to 3 direction and add the addition minor tick marks.
+
+Load in the peak data and plot peaks for both samples over the region -- 
+Add coverage data to this plot.
+
+Plot peaks for both samples over the region and add coverage data
+Add a scale to show half the range.
+
+```{r cars}
+summary(cars)
+```
