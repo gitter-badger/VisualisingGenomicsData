@@ -1335,13 +1335,13 @@ plotTracks(sTrack,from=1,to=50,
 AlignmentsTrack. 
 ========================================================
 
-So far we have displayed summarised genomics data using GRanges objects or GRanges with associated metadata.
+So far we have displayed summarised genomics data using GRange objects or GRanges with associated metadata.
 
-A prominent feature of Gviz is that it can work with Genomic Alignments, providing methods to generate graphical summaries on the fly.
+A prominent feature of Gviz is that it can work with genomic alignments, providing methods to generate graphical summaries on the fly.
 
-Genomic Alignments are stored in Gviz within the AlignmentsTrack object.
+Genomic alignments are stored in Gviz within the AlignmentsTrack object.
 
-Here we can read Genomic Alignments in from a BAM file, see our file formats course material, by specifying its location.
+Here we can read genomic alignments in from a BAM file, see our file formats course material, by specifying its location.
 
 
 
