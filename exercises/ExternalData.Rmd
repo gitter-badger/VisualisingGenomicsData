@@ -14,3 +14,16 @@ Retrieve and plot Ensembl genes for mm10 from Biomart.
 Retrieve the plot knowngene table from UCSC for mm10
 Create a plot of the metagenes for both annotations and plot alongside the splicing information for Bdnf1
 Add in some information on know SNPs using the UCSC snp137Mult table.
+
+chr2:109,672,700-109,729,043
+
+conservationTrack <- UcscTrack(genome = "mm10", chromosome = "chr2",track = "snp137Mult",
+from = 109672700, to = 109729043, trackType = "AnnotationTrack",
+start = "chromStart", end = "chromEnd", id = "name",
+feature = "func", strand = "strand", shape = "box",
+stacking = "dense", fill = "black", name = "SNPs")
+
+trackType = "AnnotationTrack",
+start = "chromStart", end = "chromEnd", id = "name",
+feature = "func", strand = "strand", shape = "box",
+stacking = "dense", fill = "black", name = "SNPs")
