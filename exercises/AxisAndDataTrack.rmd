@@ -6,22 +6,98 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = T)
+```
+
+```{r,warning=F}
+suppressPackageStartupMessages(library(Gviz))
 ```
 
 
-DiffPeak - chr2:135,522,235-135,531,066
+* Create a plot of an axis from 100kb to 1Mb
+```{r}
+suppressPackageStartupMessages(library(Gviz))
 
-Create a plot of an axis from 100kb to 1000kb
-Create a plot of an axis along side this showing a relative scale of 450kb
-Replot to Indicate the 5 to 3 direction and add the addition minor tick marks.
+library(Gviz)
+myAxisTrack <- GenomeAxisTrack()
+plotTracks(myAxisTrack,from=100000,to=1000000)
+```
 
-Load in the peak data and plot peaks for both samples over the region -- 
-Add coverage data to this plot.
+* Create a new axis showing a relative scale of 450kb
 
-Plot peaks for both samples over the region and add coverage data
-Add a scale to show half the range.
+```{r}
+plotTracks(myAxisTrack,from=100000,to=1000000,scale=450000)
+```
 
-```{r cars}
-summary(cars)
+* Replot axis from 100kb to 1Mb and indicate the 5 to 3 direction and add the addition minor tick marks.
+
+```{r}
+plotTracks(myAxisTrack,from=100000,to=1000000,
+           add53=T,
+           littleTicks=T)
+```
+
+*Load in the peak data and plot peaks for both samples over the region chr2:135,522,235-135,531,066
+
+```{r, warning=F}
+library(rtracklayer)
+myc_melPeaks <- import.bed("../Data/myc_mel.bed")
+mycmelpeaksDT <- DataTrack(myc_melPeaks,chromosome="chr2",
+                   from=135522235,
+                   to=135531066,
+                   name="Mel_peaks",
+                   type="b")
+myc_ch12Peaks <- import.bed("../Data/myc_ch12.bed")
+mycch12peaksDT <- DataTrack(myc_ch12Peaks,chromosome="chr2",
+                   from=135522235,
+                   to=135531066,
+                   name="ch12_peaks",
+                   type="b")
+plotTracks(c(mycmelpeaksDT,mycch12peaksDT),
+           chromosome="chr2",
+           from=135522235,
+           to=135531066,
+           type="b",pch=15,cex=2)
+```
+
+* Add coverage data to this plot from the **myc_mel.bw** and **myc_ch12.bw** files.
+
+```{r}
+library(rtracklayer)
+myc_melSignal <- import.bw("../Data/myc_mel.bw",as="GRanges")
+mycmelsigDT <- DataTrack(myc_melSignal,chromosome="chr2",
+                   from=135522235,
+                   to=135531066,
+                   name="Mel_Coverage",
+                   type=("hist"))
+myc_ch12Signal <- import.bw("../Data/myc_ch12.bw",as="GRanges")
+mycch12sigDT <- DataTrack(myc_ch12Signal,chromosome="chr2",
+                   from=135522235,
+                   to=135531066,
+                   name="CH12_Coverage",
+                   type=("hist"))
+plotTracks(c(mycmelsigDT,mycch12sigDT),
+           chromosome="chr2",
+           from=135522235,
+           to=135531066,
+           ylim=c(0,40),
+           type=("hist"))
+
+plotTracks(c(mycmelpeaksDT,mycmelsigDT,mycch12peaksDT,mycch12sigDT),
+           chromosome="chr2",
+           from=135522235,
+           to=135531066,
+           ylim=c(0,40),cex=2)
+```
+
+* Add a scale to show half the range.
+
+```{r}
+myAxisTrack <- GenomeAxisTrack()
+
+plotTracks(c(myAxisTrack,mycmelpeaksDT,mycmelsigDT,mycch12peaksDT,mycch12sigDT),
+           chromosome="chr2",
+           from=135522235,
+           to=135531066,
+           ylim=c(0,40),cex=1,scale=0.5)
 ```

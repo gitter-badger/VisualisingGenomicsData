@@ -6,13 +6,62 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = F)
 ```
 
-Using an AnnotationTrack create the below plot.
+* Using an AnnotationTrack create the below plot.
 
-Flatten the previous plot.
+```{r,warning=F}
 
-Load in the TxDB object for mm9 and create a plot of transcripts Igll1 and Vpreb1 and Topb3b.
+suppressPackageStartupMessages(library(GenomicRanges))
+suppressPackageStartupMessages(library(Gviz))
 
-Recreate the plot with just the meta gene representation of transcripts shown.
+library(GenomicRanges)
+library(Gviz)
+
+regions <- GRanges(seqnames=c("chr1"),IRanges(
+                   start=c(10,80,110),end=c(50,90,220)))
+names(regions) <- c("1","2","3")
+
+strand(regions) <- c("+","*","+")
+annoT <- AnnotationTrack(regions,
+                group = c("Ann1",
+                          "Ann2",
+                          "Ann1"))
+
+plotTracks(annoT,groupAnnotation="group")
+                
+
+```
+
+* Flatten the previous plot and change the colour
+
+```{r}
+
+plotTracks(annoT,groupAnnotation="group",stacking="dense",col="red",fill="red")
+                
+```
+
+* Load in the TxDB object for mm9 and create a plot of transcripts Igll1 and Vpreb1 and Topb3b. (at chr16:16,858,904-16,895,526)
+
+```{r,warning=F}
+suppressPackageStartupMessages(library(TxDb.Mmusculus.UCSC.mm9.knownGene))
+
+library(TxDb.Mmusculus.UCSC.mm9.knownGene)
+
+gtTrack <- GeneRegionTrack(TxDb.Mmusculus.UCSC.mm9.knownGene,
+                chromosome="chr16",
+                start=16858904,
+                end=16895526)
+plotTracks(gtTrack,transcriptAnnotation="name")
+                
+```
+
+
+* Recreate the plot with just the meta gene representation of transcripts shown.
+
+```{r}
+plotTracks(gtTrack,collapseTranscripts="meta",
+           transcriptAnnotation="name")
+                
+```
